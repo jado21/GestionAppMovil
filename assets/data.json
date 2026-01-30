@@ -1,0 +1,66 @@
+{
+    "asignaturas": [{
+            "id": 1,
+            "nombre": "Programación Orientada a Objetos",
+            "codigo": "ASIG001",
+            "ciclo": 4,
+            "creditos": 4,
+            "horas_teoria": 2,
+            "horas_practica": 2
+        },
+        {
+            "id": 2,
+            "nombre": "Base de Datos I",
+            "codigo": "ASIG002",
+            "ciclo": 5,
+            "creditos": 4,
+            "horas_teoria": 3,
+            "horas_practica": 0
+        }
+    ],
+    "docentes": [{
+            "id": 101,
+            "nombre": "Juan",
+            "apellido": "García López",
+            "email": "jgarcia@unmsm.edu.pe"
+        },
+        {
+            "id": 102,
+            "nombre": "María",
+            "apellido": "Torres Rojas",
+            "email": "mtorres@unmsm.edu.pe"
+        }
+    ],
+    "grupos": [{
+            "id": 501,
+            "asignatura_id": 1,
+            "docente_id": 101,
+            "periodo_id": 1
+        },
+        {
+            "id": 502,
+            "asignatura_id": 2,
+            "docente_id": 102,
+            "periodo_id": 1
+        }
+    ],
+    "horarios": [{
+            "id": 1,
+            "tipo": "Laboratorio",
+            "dia": "Lunes",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00",
+            "aula_id": 21,
+            "grupo_id": 501
+        },
+        {
+            "id": 2,
+            "tipo": "Teoría",
+            "dia": "Miércoles",
+            "hora_inicio": "14:00",
+            "hora_fin": "17:00",
+            "aula_id": 405,
+            "grupo_id": 502
+        }
+    ]
+}

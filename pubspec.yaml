@@ -1,0 +1,48 @@
+name: app_unmsm
+description: "Sistema de Gestión de Horarios Académicos - UNMSM"
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Iconos de iOS
+  cupertino_icons: ^1.0.6
+
+  # --- DEPENDENCIAS PARA GESTIÓN DE DATOS ---
+  # Para seleccionar archivos del dispositivo (Excel)
+  file_picker: ^8.0.0
+  
+  # Para leer y manipular archivos Excel (.xlsx)
+  excel: ^4.0.0
+  
+  # Para generar documentos PDF (Reportes)
+  pdf: ^3.11.0
+  
+  # Para guardar los reportes en carpetas del sistema
+  path_provider: ^2.1.2
+
+  # Para imprimir directamente desde la app
+  printing: ^5.11.0
+
+  # CORREGIDO: Versión 4.0.1 para evitar errores de compilación en Android
+  open_file_plus: ^3.4.1+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  # Indica que la app usará Material Design
+  uses-material-design: true
+
+  # --- CONFIGURACIÓN DE ASSETS ---
+  assets:
+    - assets/data.json
+    # - assets/images/logo_unmsm.png

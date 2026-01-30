@@ -1,0 +1,45 @@
+# Estándar de Flutter y Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Android relacionado (Vital para tu error actual)
+**/android/.gradle/
+**/android/local.properties
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/app/build/
+*.jks
+*.keystore
+*.apk
+*.aab
+
+# iOS relacionado
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/Pods/
+.item2/
+
+# Archivos de editores (IntelliJ, Android Studio, VS Code)
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.history
+
+# Misceláneos y Logs
+*.log
+*.class
+*.swp
+.DS_Store
+doc/api/
