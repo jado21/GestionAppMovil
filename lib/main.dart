@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
       
       // Configuración del tema institucional FISI extraído a AppTheme
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,  // ahora el tema dependera del dispositivo
 
       // Definimos la ruta inicial (La Splash Screen)
       initialRoute: '/',

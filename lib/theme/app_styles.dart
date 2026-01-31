@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  // Tema claro
   static const Color primary = Color(0xFF002244);
   static const Color primaryDark = Color(0xFF003366);
   static const Color background = Color(0xFFF5F5F5);
@@ -10,6 +11,12 @@ class AppColors {
   static const Color warning = Colors.orange;
   static const Color danger = Colors.red;
   static const Color neutralHint = Colors.grey;
+
+  // Tema oscuro
+  static const Color backgroundDark = Color(0xFF121212);
+  static const Color surfaceDark    = Color(0xFF1E1E1E);
+  static const Color textOnPrimaryDark = Colors.white;
+  static const Color textOnPrimaryMutedDark = Colors.white70;
 }
 
 class AppSpacing {
