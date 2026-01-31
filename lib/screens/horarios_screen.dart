@@ -14,7 +14,13 @@ class HorariosScreen extends StatefulWidget {
 class _HorariosScreenState extends State<HorariosScreen> {
   final ApiService _apiService = ApiService();
   final ReportService _reportService = ReportService();
-  
+
+  // los colores se actualizan en un cambio de tema gracias a estos getters
+  ThemeData get theme => Theme.of(context);
+  ColorScheme get colors => theme.colorScheme;
+  Color get appBarBg => theme.appBarTheme.backgroundColor ?? colors.primary;
+  Color get appBarFg => theme.appBarTheme.foregroundColor ?? colors.onPrimary;
+
   List<HorarioDetallado> _horariosAMostrar = [];
   bool _isLoading = true;
 
@@ -51,18 +57,19 @@ class _HorariosScreenState extends State<HorariosScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text("Horario FISI", style: AppTextStyles.onPrimary),
-        backgroundColor: AppColors.primary,
+        title: Text("Horario FISI", style: TextStyle(color: appBarFg)),
+        backgroundColor: appBarBg,
         actions: [
           IconButton(
-            icon: const Icon(Icons.picture_as_pdf, color: AppColors.textOnPrimary),
+            icon: Icon(Icons.picture_as_pdf, color: appBarFg),
             onPressed: () => _reportService.generarPDF(_horariosAMostrar),
           ),
           IconButton(
-            icon: const Icon(Icons.settings, color: AppColors.textOnPrimary),
+            icon: Icon(Icons.settings, color: appBarFg),
             onPressed: () => Navigator.pushNamed(context, '/gestion').then((_) => _aplicarFiltros()),
           ),
         ],
@@ -88,15 +95,15 @@ class _HorariosScreenState extends State<HorariosScreen> {
 
   Widget _buildFiltrosBar() {
     return Container(
-      color: AppColors.primary,
+      color: appBarBg,
       padding: AppSpacing.filterPadding,
       child: Row(
         children: [
           Expanded(
             child: DropdownButton<String>(
-              dropdownColor: AppColors.primaryDark,
+              dropdownColor: colors.secondary,
               value: _periodoActual,
-              style: AppTextStyles.onPrimary,
+              style: TextStyle(color: appBarFg),
               items: ["24-I", "24-II", "25-0"].map((p) => DropdownMenuItem(value: p, child: Text("Periodo $p"))).toList(),
               onChanged: (val) {
                 _periodoActual = val!;
@@ -107,9 +114,9 @@ class _HorariosScreenState extends State<HorariosScreen> {
           const SizedBox(width: AppSpacing.gapMd),
           Expanded(
             child: DropdownButton<int>(
-              dropdownColor: AppColors.primaryDark,
+              dropdownColor: colors.secondary,
               value: _grupoActual,
-              style: AppTextStyles.onPrimary,
+              style: TextStyle(color: appBarFg),
               items: [1, 2, 3, 4, 5, 7].map((g) => DropdownMenuItem(value: g, child: Text("Grupo $g"))).toList(),
               onChanged: (val) {
                 _grupoActual = val!;
@@ -130,16 +137,32 @@ class _HorariosScreenState extends State<HorariosScreen> {
       child: ListTile(
         leading: Container(
           width: 60,
-          decoration: BoxDecoration(color: AppColors.primary, borderRadius: AppRadii.badge),
+          decoration: BoxDecoration(color: colors.primary, borderRadius: AppRadii.badge),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(hd.horario.dia.substring(0, 3), style: AppTextStyles.chipDay),
-              Text(hd.horario.horaInicio, style: AppTextStyles.chipTime),
+              Text(
+                hd.horario.dia.substring(0, 3),
+                style: TextStyle(
+                    color: colors.onPrimary,
+                    fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                hd.horario.horaInicio,
+                style: TextStyle(
+                    // color: colors.onPrimary.withValues(alpha: 0.9),
+                    color: colors.onPrimary,
+                    // fontSize: 10
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
-        title: Text(hd.nombreCurso, style: AppTextStyles.horarioTitle),
+        // este cambio en el style de title solo es un testeo
+        // title: Text(hd.nombreCurso, style: AppTextStyles.horarioTitle),
+        title: Text(hd.nombreCurso, style: theme.textTheme.headlineMedium),
         subtitle: Text("${hd.nombreDocente}\nAula: ${hd.horario.aulaId} | ${hd.horario.tipo}"),
         isThreeLine: true,
       ),

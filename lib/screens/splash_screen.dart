@@ -24,8 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.primary, // Azul institucional UNMSM
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Scaffold(
+      backgroundColor: colors.primary, // Azul institucional UNMSM
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,20 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(
               Icons.school,
               size: 100,
-              color: AppColors.textOnPrimary,
+              color: colors.onPrimary,
             ),
-            SizedBox(height: AppSpacing.gapLgAlt),
+            const SizedBox(height: AppSpacing.gapLgAlt),
             Text(
               "SISTEMA ACADÉMICO",
-              style: AppTextStyles.splashTitle,
+              style: AppTextStyles.splashTitle.copyWith(color: colors.onPrimary),
             ),
             Text(
               "FISI - UNMSM",
-              style: AppTextStyles.splashSubtitle,
+              style: AppTextStyles.splashSubtitle.copyWith(color: colors.onPrimary),
             ),
-            SizedBox(height: AppSpacing.gapXl),
+            const SizedBox(height: AppSpacing.gapXl),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.textOnPrimary),
+              valueColor: AlwaysStoppedAnimation<Color>(colors.onPrimary),
             ),
           ],
         ),

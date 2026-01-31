@@ -14,6 +14,9 @@ class _GestionScreenState extends State<GestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Gestión de Datos")),
       body: Padding(
@@ -25,8 +28,8 @@ class _GestionScreenState extends State<GestionScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.textOnPrimary,
+                backgroundColor: colors.primary,
+                foregroundColor: colors.onPrimary,
               ),
               onPressed: () {
                 setState(() => datosCargados = true);
@@ -53,7 +56,7 @@ class _GestionScreenState extends State<GestionScreen> {
               ),
               const SizedBox(height: AppSpacing.gapLg),
               // El corazón de tu boceto como icono decorativo
-              const Icon(Icons.favorite, color: AppColors.danger, size: 50),
+              Icon(Icons.favorite, color: colors.error, size: 50),
               const SizedBox(height: AppSpacing.gapLg),
               
               OutlinedButton.icon(

@@ -23,11 +23,14 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Módulo de Carga FISI"),
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.textOnPrimary,
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        foregroundColor: theme.appBarTheme.foregroundColor,
       ),
       body: Center(
         child: SingleChildScrollView( 
@@ -39,7 +42,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                 Icon(
                   _archivoCargado ? Icons.check_circle : Icons.cloud_upload,
                   size: 80,
-                  color: _archivoCargado ? AppColors.success : AppColors.primary,
+                  color: _archivoCargado ? colors.tertiary : colors.primary,
                 ),
                 const SizedBox(height: AppSpacing.gapLg),
 
@@ -69,9 +72,9 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                               });
                               
                               messenger.showSnackBar(
-                                const SnackBar(
-                                  content: Text("Excel procesado con éxito"),
-                                  backgroundColor: AppColors.success,
+                                SnackBar(
+                                  content: const Text("Excel procesado con éxito"),
+                                  backgroundColor: colors.tertiary,
                                 ),
                               );
                             } else {
@@ -89,7 +92,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                             messenger.showSnackBar(
                               SnackBar(
                                 content: Text("Error: $e"),
-                                backgroundColor: AppColors.danger,
+                                backgroundColor: colors.error,
                               ),
                             );
                           }
@@ -98,8 +101,8 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                         label: const Text("SUBIR PLAN DE ESTUDIOS"),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(250, 60),
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.textOnPrimary,
+                          backgroundColor: colors.primary,
+                          foregroundColor: colors.onPrimary,
                           shape: RoundedRectangleBorder(
                             borderRadius: AppRadii.card,
                           ),
@@ -143,8 +146,8 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                     label: const Text("DESCARGAR REPORTE PDF"),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(250, 50),
-                      side: const BorderSide(color: AppColors.primary, width: 1.5),
-                      foregroundColor: AppColors.primary,
+                      side: BorderSide(color: colors.primary, width: 1.5),
+                      foregroundColor: colors.primary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.gapSm),
@@ -157,13 +160,13 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                         const SnackBar(content: Text("Datos limpiados")),
                       );
                     },
-                    icon: const Icon(Icons.delete_forever, color: AppColors.danger),
-                    label: const Text("LIMPIAR CARGA", style: AppTextStyles.danger),
+                    icon: Icon(Icons.delete_forever, color: colors.error),
+                    label: Text("LIMPIAR CARGA", style: TextStyle(color: colors.error)),
                   ),
                 ] else 
-                  const Text(
+                  Text(
                     "Cargue un archivo para habilitar reportes", 
-                    style: AppTextStyles.helper,
+                    style: theme.textTheme.bodySmall,
                   ),
               ],
             ),
