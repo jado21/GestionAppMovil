@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'horarios_screen.dart';
+import '../theme/app_styles.dart';
 // import 'asignaturas_screen.dart'; // La crearás luego
 
 class PantallaPrincipal extends StatelessWidget {
@@ -10,7 +11,7 @@ class PantallaPrincipal extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Portal Administrativo")),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: AppSpacing.screenPadding,
         child: Column(
           children: [
             _buildMenuCard(
@@ -19,7 +20,7 @@ class PantallaPrincipal extends StatelessWidget {
               Icons.calendar_month, 
               const HorariosScreen()
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: AppSpacing.gapSm),
             _buildMenuCard(
               context, 
               "ASIGNATURAS Y GRUPOS", 
@@ -36,9 +37,9 @@ class PantallaPrincipal extends StatelessWidget {
     return Card(
       elevation: 4,
       child: ListTile(
-        contentPadding: const EdgeInsets.all(20),
-        leading: Icon(icono, size: 40, color: const Color(0xFF002244)),
-        title: Text(titulo, style: const TextStyle(fontWeight: FontWeight.bold)),
+        contentPadding: AppSpacing.tilePadding,
+        leading: Icon(icono, size: 40, color: AppColors.primary),
+        title: Text(titulo, style: AppTextStyles.menuTitle),
         trailing: const Icon(Icons.arrow_forward_ios),
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => destino)),
       ),

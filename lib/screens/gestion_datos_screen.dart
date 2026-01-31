@@ -3,6 +3,7 @@ import '../services/document_service.dart';
 import '../services/report_service.dart'; 
 import '../services/api_service.dart';    
 import '../models/horario_model.dart';
+import '../theme/app_styles.dart';
 
 class GestionDatosScreen extends StatefulWidget {
   const GestionDatosScreen({super.key});
@@ -25,22 +26,22 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Módulo de Carga FISI"),
-        backgroundColor: const Color(0xFF002244),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.textOnPrimary,
       ),
       body: Center(
         child: SingleChildScrollView( 
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: AppSpacing.screenPaddingLarge,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   _archivoCargado ? Icons.check_circle : Icons.cloud_upload,
                   size: 80,
-                  color: _archivoCargado ? Colors.green : const Color(0xFF002244),
+                  color: _archivoCargado ? AppColors.success : AppColors.primary,
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: AppSpacing.gapLg),
 
                 // BOTÓN DE CARGA EXCEL
                 _isUploading
@@ -70,7 +71,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                               messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text("Excel procesado con éxito"),
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: AppColors.success,
                                 ),
                               );
                             } else {
@@ -78,7 +79,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                               messenger.showSnackBar(
                                 const SnackBar(
                                   content: Text("No se seleccionó ningún archivo"),
-                                  backgroundColor: Colors.orange,
+                                  backgroundColor: AppColors.warning,
                                 ),
                               );
                             }
@@ -88,7 +89,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                             messenger.showSnackBar(
                               SnackBar(
                                 content: Text("Error: $e"),
-                                backgroundColor: Colors.red,
+                                backgroundColor: AppColors.danger,
                               ),
                             );
                           }
@@ -97,24 +98,24 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                         label: const Text("SUBIR PLAN DE ESTUDIOS"),
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(250, 60),
-                          backgroundColor: const Color(0xFF002244),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.textOnPrimary,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: AppRadii.card,
                           ),
                         ),
                       ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: AppSpacing.gapXl),
                 const Divider(),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppSpacing.gapXl),
 
                 if (_archivoCargado) ...[
                   const Text(
                     "Opciones de Reporte",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: AppTextStyles.sectionTitle,
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: AppSpacing.gapSm),
                   DropdownButton<String>(
                     value: _periodoSeleccionado,
                     onChanged: (val) => setState(() => _periodoSeleccionado = val!),
@@ -122,7 +123,7 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                       return DropdownMenuItem(value: p, child: Text("Periodo: $p"));
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.gapMd),
                   OutlinedButton.icon(
                     onPressed: () async {
                       final messenger = ScaffoldMessenger.of(context);
@@ -142,11 +143,11 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                     label: const Text("DESCARGAR REPORTE PDF"),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(250, 50),
-                      side: const BorderSide(color: Color(0xFF002244), width: 1.5),
-                      foregroundColor: const Color(0xFF002244),
+                      side: const BorderSide(color: AppColors.primary, width: 1.5),
+                      foregroundColor: AppColors.primary,
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: AppSpacing.gapSm),
                   // Botón para limpiar los datos cargados
                   TextButton.icon(
                     onPressed: () {
@@ -156,13 +157,13 @@ class _GestionDatosScreenState extends State<GestionDatosScreen> {
                         const SnackBar(content: Text("Datos limpiados")),
                       );
                     },
-                    icon: const Icon(Icons.delete_forever, color: Colors.red),
-                    label: const Text("LIMPIAR CARGA", style: TextStyle(color: Colors.red)),
+                    icon: const Icon(Icons.delete_forever, color: AppColors.danger),
+                    label: const Text("LIMPIAR CARGA", style: AppTextStyles.danger),
                   ),
                 ] else 
                   const Text(
                     "Cargue un archivo para habilitar reportes", 
-                    style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+                    style: AppTextStyles.helper,
                   ),
               ],
             ),

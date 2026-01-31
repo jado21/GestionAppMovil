@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_styles.dart';
 
 class GestionScreen extends StatefulWidget {
   const GestionScreen({super.key});
@@ -16,7 +17,7 @@ class _GestionScreenState extends State<GestionScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Gestión de Datos")),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: AppSpacing.screenPadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -24,8 +25,8 @@ class _GestionScreenState extends State<GestionScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),
-                backgroundColor: const Color(0xFF002244),
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.textOnPrimary,
               ),
               onPressed: () {
                 setState(() => datosCargados = true);
@@ -33,12 +34,12 @@ class _GestionScreenState extends State<GestionScreen> {
                   const SnackBar(content: Text("Excel procesado exitosamente")),
                 );
               },
-              child: const Text("SUBIR EXCEL / CSV", style: TextStyle(fontSize: 18)),
+              child: const Text("SUBIR EXCEL / CSV", style: AppTextStyles.buttonLarge),
             ),
-            
-            const SizedBox(height: 40),
+
+            const SizedBox(height: AppSpacing.gapXl),
             const Divider(),
-            const SizedBox(height: 40),
+            const SizedBox(height: AppSpacing.gapXl),
 
             // SECCIÓN REPORTE (Boceto 2)
             if (datosCargados) ...[
@@ -50,10 +51,10 @@ class _GestionScreenState extends State<GestionScreen> {
                 }).toList(),
                 onChanged: (val) => setState(() => periodoSeleccionado = val!),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: AppSpacing.gapLg),
               // El corazón de tu boceto como icono decorativo
-              const Icon(Icons.favorite, color: Colors.red, size: 50),
-              const SizedBox(height: 30),
+              const Icon(Icons.favorite, color: AppColors.danger, size: 50),
+              const SizedBox(height: AppSpacing.gapLg),
               
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
