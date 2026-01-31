@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../theme/app_styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,8 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF002244), // Azul institucional UNMSM
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Scaffold(
+      backgroundColor: colors.primary, // Azul institucional UNMSM
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -32,28 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(
               Icons.school,
               size: 100,
-              color: Colors.white,
+              color: colors.onPrimary,
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.gapLgAlt),
             Text(
               "SISTEMA ACADÉMICO",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
+              style: AppTextStyles.splashTitle.copyWith(color: colors.onPrimary),
             ),
             Text(
               "FISI - UNMSM",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 18,
-              ),
+              style: AppTextStyles.splashSubtitle.copyWith(color: colors.onPrimary),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: AppSpacing.gapXl),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(colors.onPrimary),
             ),
           ],
         ),
