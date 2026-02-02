@@ -1,3 +1,4 @@
+import 'package:app_unmsm/widgets/layout.dart';
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 import 'screens/horarios_screen.dart';
@@ -29,9 +30,9 @@ class MyApp extends StatelessWidget {
       
       // Definimos el mapa de rutas de la aplicación
       routes: {
-        '/': (context) => const SplashScreen(),
-        '/horarios': (context) => const HorariosScreen(),
-        '/gestion': (context) => const GestionDatosScreen(),
+        '/': (context) => const MainLayout(child: SplashScreen()),
+        '/horarios': (context) => const MainLayout(child: HorariosScreen()),
+        '/gestion': (context) => const MainLayout(child: GestionDatosScreen()),
       },
     );
   }
