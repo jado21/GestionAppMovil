@@ -41,7 +41,8 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,  // con esto flutter sabe que es oscuro
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
+        seedColor: AppColors.primaryDarkMode,
+        primary: AppColors.primaryDarkMode,
         brightness: Brightness.dark,
         surface: AppColors.surfaceDark,
       ),

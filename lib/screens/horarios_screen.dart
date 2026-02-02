@@ -62,7 +62,7 @@ class _HorariosScreenState extends State<HorariosScreen> {
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text("Horario FISI", style: TextStyle(color: appBarFg)),
-        backgroundColor: appBarBg,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         actions: [
           IconButton(
             icon: Icon(Icons.picture_as_pdf, color: appBarFg),
