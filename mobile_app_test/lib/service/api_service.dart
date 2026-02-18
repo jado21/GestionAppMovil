@@ -8,7 +8,7 @@ class ApiService {
       String ciclo, String grupo) async {
 
     final response = await http.post(
-      Uri.parse('https://52d925bfc2d2.ngrok-free.app/api/obtener-horario/'),
+      Uri.parse('https://testserver-vq3x.onrender.com/api/obtener-horario/'),
       headers: {
         'Content-Type': 'application/json',
       },

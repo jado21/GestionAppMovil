@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_test/screens/formularioScreen.dart';
-
+import 'package:mobile_app_test/screens/welcomeScreen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -11,7 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: FormularioScreen(),
+      debugShowCheckedModeBanner: false,
+      home: Welcomescreen(),
     );
   }
 }
