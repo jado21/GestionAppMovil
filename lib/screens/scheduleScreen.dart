@@ -22,9 +22,12 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   final double heightHeader = 50.0;
   final Color rojoOscuro = const Color(0xFFA80010);
 
+  // RANGO DE HORAS ACTUALIZADO (8:00 a 22:00)
+  final int horaInicioGlobal = 8;
+  final int horaFinGlobal = 22;
+
   final List<String> diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-  // MAPA DE COLORES (Flutter)
   final Map<String, Color> mapaColoresCursos = {
     'REDACCIÓN': const Color(0xFFD32F2F),
     'CÁLCULO': const Color(0xFFFF9800),
@@ -35,8 +38,6 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     'MEDIO AMBIENTE': const Color(0xFFCCFF00),
     'DESARROLLO Y LIDERAZGO': const Color(0xFFFFEB3B),
   };
-
-  // --- LÓGICA DE APOYO ---
 
   Color _obtenerColorCurso(String nombre) {
     String n = nombre.toUpperCase();
@@ -59,11 +60,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
 
   Future<void> _exportarPDF() async {
     final pdf = pw.Document();
-    const int horaInicio = 5;
-    const int horaFin = 23;
-
+    
     final double anchoTotal = widthColumnaHora + (diasSemana.length * widthColumnaDia);
-    final double altoTotal = heightHeader + ((horaFin - horaInicio) * heightHora);
+    final double altoTotal = heightHeader + ((horaFinGlobal - horaInicioGlobal + 1) * heightHora);
 
     pdf.addPage(
       pw.Page(
@@ -71,9 +70,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
         build: (pw.Context context) {
           return pw.Stack(
             children: [
-              _dibujarGrillaPdf(horaFin - horaInicio, horaInicio, anchoTotal),
+              _dibujarGrillaPdf(horaFinGlobal - horaInicioGlobal + 1, horaInicioGlobal, anchoTotal),
               _dibujarCabecerasPdf(),
-              ..._generarBloquesPdf(horaInicio),
+              ..._generarBloquesPdf(horaInicioGlobal),
             ],
           );
         },
@@ -91,9 +90,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   @override
   Widget build(BuildContext context) {
     final double anchoTotal = widthColumnaHora + (diasSemana.length * widthColumnaDia);
-    const int horaInicio = 5;
-    const int horaFin = 23;
-    final double altoTotal = heightHeader + ((horaFin - horaInicio) * heightHora);
+    // Calculamos el total de filas (de 8 a 22 inclusive son 15 filas)
+    final int totalFilas = horaFinGlobal - horaInicioGlobal + 1;
+    final double altoTotal = heightHeader + (totalFilas * heightHora);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -118,9 +117,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
             height: altoTotal,
             child: Stack(
               children: [
-                _dibujarGrillaFondoUI(horaFin - horaInicio, horaInicio, anchoTotal),
+                _dibujarGrillaFondoUI(totalFilas, horaInicioGlobal, anchoTotal),
                 _dibujarCabecerasUI(),
-                ..._generarBloquesUI(horaInicio), // Restaurado
+                ..._generarBloquesUI(horaInicioGlobal),
               ],
             ),
           ),
@@ -139,7 +138,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
           Container(
             width: widthColumnaHora, alignment: Alignment.topCenter, padding: const EdgeInsets.only(top: 5),
             decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.grey[300]!))),
-            child: Text('${inicio + i}:00', style: TextStyle(fontSize: 12, color: rojoOscuro, fontWeight: FontWeight.bold)),
+            child: Text('${inicio + i}:00', 
+              style: TextStyle(fontSize: 12, color: rojoOscuro, fontWeight: FontWeight.bold)),
           )
         ]),
       ))
@@ -151,7 +151,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
       Container(width: widthColumnaHora, height: heightHeader, color: rojoOscuro),
       ...diasSemana.map((dia) => Container(
         width: widthColumnaDia, height: heightHeader, color: rojoOscuro, alignment: Alignment.center,
-        child: Text(dia.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+        child: Text(dia.toUpperCase(), 
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
       )),
     ]);
   }
@@ -171,6 +172,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
       for (var clase in diaData.clases) {
         final double inicio = _parseHora(clase.horaInicio);
         final double fin = _parseHora(clase.horaFin);
+        
+        // Calculamos la posición TOP restando el nuevo inicio (8)
         final double top = heightHeader + ((inicio - horaInicioGrid) * heightHora);
         final double height = (fin - inicio) * heightHora;
         final double left = widthColumnaHora + (indexColumna * widthColumnaDia);
@@ -222,7 +225,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
           pw.Container(
             width: widthColumnaHora, alignment: pw.Alignment.topCenter, padding: const pw.EdgeInsets.only(top: 5),
             decoration: const pw.BoxDecoration(border: pw.Border(right: pw.BorderSide(color: PdfColors.grey300))),
-            child: pw.Text('${inicio + i}:00', style: pw.TextStyle(fontSize: 10, color: PdfColor.fromInt(rojoOscuro.value), fontWeight: pw.FontWeight.bold)),
+            child: pw.Text('${inicio + i}:00', 
+              style: pw.TextStyle(fontSize: 10, color: PdfColor.fromInt(rojoOscuro.value), fontWeight: pw.FontWeight.bold)),
           )
         ]),
       ))
@@ -234,7 +238,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
       pw.Container(width: widthColumnaHora, height: heightHeader, color: PdfColor.fromInt(rojoOscuro.value)),
       ...diasSemana.map((dia) => pw.Container(
         width: widthColumnaDia, height: heightHeader, color: PdfColor.fromInt(rojoOscuro.value), alignment: pw.Alignment.center,
-        child: pw.Text(dia.toUpperCase(), style: pw.TextStyle(color: PdfColors.white, fontWeight: pw.FontWeight.bold, fontSize: 12)),
+        child: pw.Text(dia.toUpperCase(), 
+          style: pw.TextStyle(color: PdfColors.white, fontWeight: pw.FontWeight.bold, fontSize: 12)),
       )),
     ]);
   }
