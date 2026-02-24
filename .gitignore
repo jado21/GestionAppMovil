@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+AGENTS.md
+ARCHITECTURE_IDEA.md
 
 # Symbolication related
 app.*.symbols
