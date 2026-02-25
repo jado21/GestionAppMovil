@@ -107,7 +107,7 @@ class CursosScreen extends StatelessWidget {
         DataCell(Text(dia.dia)),
         DataCell(Text(clase.horaInicio)),
         DataCell(Text(clase.horaFin)),
-        DataCell(Text(_displayValue(clase.aula))),
+        DataCell(Text(_displayValue(clase.aula.toString()))),
         DataCell(Text(grupo)),
       ]);
     }).toList();
