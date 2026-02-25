@@ -200,9 +200,12 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                     style: TextStyle(color: colorTexto, fontSize: 10, fontWeight: FontWeight.bold, height: 1.1),
                     maxLines: 3, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 2),
-                  Text(clase.aula, 
+                  Text("AULA : ${clase.aula}", 
                     style: TextStyle(color: colorTexto.withOpacity(0.8), fontSize: 9),
                     maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text("DOCENTE : ${clase.docente}",
+                  style: TextStyle(color: colorTexto.withOpacity(0.8), fontSize: 9),
+                    maxLines: 1, overflow: TextOverflow.ellipsis)
                 ],
               ),
             ),
@@ -275,7 +278,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                 children: [
                   pw.Text(clase.curso, style: pw.TextStyle(color: colorT, fontSize: 8, fontWeight: pw.FontWeight.bold)),
                   pw.SizedBox(height: 2),
-                  pw.Text(clase.aula, style: pw.TextStyle(color: colorT, fontSize: 7)),
+                  pw.Text(clase.aula.toString(), style: pw.TextStyle(color: colorT, fontSize: 7)),
                 ],
               ),
             ),
