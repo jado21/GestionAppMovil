@@ -13,6 +13,7 @@ class ApiService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
+        'ciclo': ciclo,
         'grupo': grupo,
       }),
     );
