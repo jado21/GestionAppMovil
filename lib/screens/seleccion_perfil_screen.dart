@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'formularioScreen.dart'; 
+import 'seleccion_ciclo_screen.dart';
+import 'seleccion_seccion_screen.dart';
 
 class SeleccionPerfilScreen extends StatelessWidget {
   const SeleccionPerfilScreen({super.key});
@@ -54,16 +55,28 @@ class SeleccionPerfilScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Column(
                     children: [
-                      _buildProfileButton(
-                        context, 
-                        'SOY CACHIMBO', 
-                        esCachimbo: true, // Envía true
+                      // CACHIMBO → Directo a secciones del Ciclo I
+                      _buildNavButton(
+                        context,
+                        'SOY CACHIMBO',
+                        () => _navegarConTransicion(
+                          context,
+                          const SeleccionSeccionScreen(
+                            esCachimbo: true,
+                            ciclo: '1',
+                            cicloRomano: 'I',
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      _buildProfileButton(
-                        context, 
-                        'SOY REGULAR', 
-                        esCachimbo: false, // Envía false
+                      // REGULAR → Pantalla para escoger ciclo (II al X)
+                      _buildNavButton(
+                        context,
+                        'SOY REGULAR',
+                        () => _navegarConTransicion(
+                          context,
+                          const SeleccionCicloScreen(),
+                        ),
                       ),
                     ],
                   ),
@@ -103,8 +116,36 @@ class SeleccionPerfilScreen extends StatelessWidget {
     );
   }
 
-  // Widget para los botones blancos
-  Widget _buildProfileButton(BuildContext context, String text, {required bool esCachimbo}) {
+  // Transición reutilizable con fade + slide
+  void _navegarConTransicion(BuildContext context, Widget destino) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        reverseTransitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (context, animation, secondaryAnimation) => destino,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOutCubic,
+          );
+          return FadeTransition(
+            opacity: curved,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.2),
+                end: Offset.zero,
+              ).animate(curved),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Widget para los botones de navegación
+  Widget _buildNavButton(BuildContext context, String text, VoidCallback onPressed) {
     return SizedBox(
       width: double.infinity,
       height: 60,
@@ -117,15 +158,7 @@ class SeleccionPerfilScreen extends StatelessWidget {
           ),
           elevation: 5,
         ),
-        onPressed: () {
-          // NAVEGACIÓN: Enviamos la variable 'esCachimbo' a la siguiente pantalla
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FormularioScreen(esCachimbo: esCachimbo),
-            ),
-          );
-        },
+        onPressed: onPressed,
         child: Text(
           text,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

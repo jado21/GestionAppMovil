@@ -45,3 +45,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignore all build folders (Flutter / Android)
+**/build/
+
+# Ignore Gradle folders
+.gradle/
+**/.gradle/
+
+# Ignore nested test project (if not needed in repo)
+mobile_app_test/
