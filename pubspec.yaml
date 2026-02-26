@@ -1,0 +1,49 @@
+name: mobile_app_test
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.10.7 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  shared_preferences: ^2.2.2
+  
+  # Librerías para PDF y exportación
+  pdf: ^3.10.7
+  printing: ^5.11.0
+  path_provider: ^2.1.2
+  
+  # Otras librerías necesarias
+  screenshot: ^3.0.0
+  gal: ^2.3.2
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  # Herramienta para generar el icono de la app automáticamente
+  flutter_launcher_icons: ^0.13.1
+
+# Configuración del Icono de la App (se verá en el menú del celular)
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
+  adaptive_icon_background: "#A80010" # Color guinda de la FISI
+  adaptive_icon_foreground: "assets/logo.png"
+
+flutter:
+  uses-material-design: true
+
+  # SECCIÓN DE ASSETS COMPLETA
+  assets:
+    - assets/fondo.jpg
+    - assets/fondo_formulario.jpg
+    - assets/cachimbo.png
+    - assets/regular.png
+    - assets/logo.png
