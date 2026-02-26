@@ -13,7 +13,8 @@ class ApiService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'grupo': grupo,
+        'ciclo': int.tryParse(ciclo) ?? 1,
+        'grupo': int.tryParse(grupo) ?? 1,
       }),
     );
 

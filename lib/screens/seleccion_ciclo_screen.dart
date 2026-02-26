@@ -205,9 +205,9 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
                         physics: const BouncingScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          mainAxisSpacing: 16,
+                          mainAxisSpacing: 20,
                           crossAxisSpacing: 16,
-                          childAspectRatio: 1.3,
+                          childAspectRatio: 2,
                         ),
                         itemCount: ciclosRomano.length,
                         itemBuilder: (context, index) {
@@ -322,7 +322,7 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeOut,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: widget.isSelected
                     ? Colors.white
@@ -338,13 +338,13 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(16),
                     color: widget.isSelected
                         ? const Color(0xFFC92834).withOpacity(0.75)
                         : const Color(0xFFC92834).withOpacity(_isPressed ? 0.65 : 0.6),
@@ -356,7 +356,7 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                         widget.label,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: widget.label.length > 3 ? 22 : 28,
+                          fontSize: widget.label.length > 3 ? 17 : 22,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2,
                           shadows: const [
@@ -367,14 +367,14 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                           ],
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 2),
                       Text(
                         'Ciclo ${widget.numero}',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.6),
-                          fontSize: 11,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          letterSpacing: 0.5,
+                          letterSpacing: 0.7,
                         ),
                       ),
                     ],

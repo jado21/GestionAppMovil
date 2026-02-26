@@ -388,7 +388,7 @@ class _SeccionBlurButtonState extends State<_SeccionBlurButton>
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     // Tamaño responsivo de cada botón
-    final double buttonSize = screenWidth > 600 ? 130 : (screenWidth - 90) / 3;
+    final double buttonSize = screenWidth > 600 ? 130 : (screenWidth - 80) / 3;
 
     // Animación de entrada escalonada
     final double delayFraction = (widget.delay / 600.0).clamp(0.0, 0.85);

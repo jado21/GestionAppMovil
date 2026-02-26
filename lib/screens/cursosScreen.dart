@@ -17,9 +17,9 @@ class CursosScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Cursos',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Text(
+          'Cursos - Ciclo ${horarioResponse.ciclo}, Grupo ${horarioResponse.grupo}',
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         backgroundColor: rojoOscuro,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -54,6 +54,7 @@ class CursosScreen extends StatelessWidget {
                         ),
                       ),
                       const DataColumn(label: Text('Docente')),
+                      const DataColumn(label: Text('Tipo')),
                       const DataColumn(label: Text('Día')),
                       const DataColumn(label: Text('Hora Inicio')),
                       const DataColumn(label: Text('Hora Fin')),
@@ -104,10 +105,11 @@ class CursosScreen extends StatelessWidget {
           ),
         ),
         DataCell(Text(_displayValue(clase.docente))),
+        DataCell(Text(_formatTipo(clase.tipoClase))),
         DataCell(Text(dia.dia)),
         DataCell(Text(clase.horaInicio)),
         DataCell(Text(clase.horaFin)),
-        DataCell(Text(_displayValue(clase.aula))),
+        DataCell(Text(_displayAula(clase.aula))),
         DataCell(Text(grupo)),
       ]);
     }).toList();
@@ -119,6 +121,28 @@ class CursosScreen extends StatelessWidget {
       return 'Sin asignar';
     }
     return value;
+  }
+
+  String _displayAula(String aula) {
+    if (aula == '0' || aula.trim().isEmpty || aula.toLowerCase() == 'none') {
+      return 'Sin asignar';
+    }
+    return aula;
+  }
+
+  String _formatTipo(String tipo) {
+    switch (tipo.toLowerCase()) {
+      case 'teoria':
+      case 'teoría':
+        return 'Teoría';
+      case 'laboratorio':
+        return 'Laboratorio';
+      case 'practica':
+      case 'práctica':
+        return 'Práctica';
+      default:
+        return tipo.isEmpty ? '-' : tipo;
+    }
   }
 }
 
