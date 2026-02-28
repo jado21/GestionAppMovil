@@ -5,7 +5,7 @@ import '../models/horario_response.dart';
 class ApiService {
   
   static Future<HorarioResponse> enviarCicloGrupo(
-      String ciclo, String grupo) async {
+      String ciclo, String grupo, String escuela) async {
 
     final response = await http.post(
       Uri.parse('https://testserver-vq3x.onrender.com/api/obtener-horario/'),
@@ -13,6 +13,7 @@ class ApiService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
+        'escuela': escuela,
         'ciclo': int.tryParse(ciclo) ?? 1,
         'grupo': int.tryParse(grupo) ?? 1,
       }),

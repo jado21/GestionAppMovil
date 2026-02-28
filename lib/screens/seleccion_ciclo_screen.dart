@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'seleccion_seccion_screen.dart';
 
 class SeleccionCicloScreen extends StatefulWidget {
+  final String escuela;
 
-  const SeleccionCicloScreen({super.key});
+  const SeleccionCicloScreen({super.key, required this.escuela});
 
   @override
   State<SeleccionCicloScreen> createState() => _SeleccionCicloScreenState();
@@ -87,6 +88,7 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
               esCachimbo: false,
               ciclo: (index + 2).toString(),
               cicloRomano: ciclosRomano[index],
+              escuela: widget.escuela,
             );
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

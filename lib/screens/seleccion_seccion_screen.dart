@@ -7,12 +7,14 @@ class SeleccionSeccionScreen extends StatefulWidget {
   final bool esCachimbo;
   final String ciclo;
   final String cicloRomano;
+  final String escuela;
 
   const SeleccionSeccionScreen({
     super.key,
     required this.esCachimbo,
     required this.ciclo,
     required this.cicloRomano,
+    required this.escuela,
   });
 
   @override
@@ -102,6 +104,7 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
       final data = await ApiService.enviarCicloGrupo(
         widget.ciclo,
         seccionLabel,
+        widget.escuela,
       );
 
       if (!mounted) return;
