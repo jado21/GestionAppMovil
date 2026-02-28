@@ -11,7 +11,7 @@ class SeleccionPerfilScreen extends StatefulWidget {
 
 class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
     with TickerProviderStateMixin {
-  String? _selectedPerfil; // 'cachimbo' o 'regular'
+  String? _selectedPerfil;
   String? _selectedEscuela;
 
   late AnimationController _titleController;
@@ -207,7 +207,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               height: 250,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.04),
+                color: Colors.white.withValues(alpha: 0.04),
               ),
             ),
           ),
@@ -219,7 +219,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.03),
+                color: Colors.white.withValues(alpha: 0.03),
               ),
             ),
           ),
@@ -248,9 +248,9 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.white.withValues(alpha: 0.2),
                                 width: 1.5,
                               ),
                             ),
@@ -282,7 +282,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                           Text(
                             '¿Cuál es tu perfil académico?',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
+                              color: Colors.white.withValues(alpha: 0.7),
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0.5,
@@ -293,7 +293,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                             width: 50,
                             height: 3,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.4),
+                              color: Colors.white.withValues(alpha: 0.4),
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
@@ -388,30 +388,30 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: isSelected
-                ? Colors.white.withOpacity(0.22)
-                : Colors.white.withOpacity(0.08),
+                ? Colors.white.withValues(alpha: 0.22)
+                : Colors.white.withValues(alpha: 0.08),
             border: Border.all(
               color: isSelected
-                  ? Colors.white.withOpacity(0.7)
-                  : Colors.white.withOpacity(0.15),
+                  ? Colors.white.withValues(alpha: 0.7)
+                  : Colors.white.withValues(alpha: 0.15),
               width: isSelected ? 2.0 : 1.0,
             ),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
                     BoxShadow(
-                      color: const Color(0xFFE81525).withOpacity(0.3),
+                      color: const Color(0xFFE81525).withValues(alpha: 0.3),
                       blurRadius: 30,
                       offset: const Offset(0, 4),
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -427,7 +427,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isSelected
-                      ? Colors.white.withOpacity(0.15)
+                      ? Colors.white.withValues(alpha: 0.15)
                       : Colors.transparent,
                 ),
                 child: Image.asset(
@@ -437,7 +437,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                     return Icon(
                       Icons.person,
                       size: 80,
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                     );
                   },
                 ),
@@ -453,7 +453,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                   letterSpacing: 1.2,
                   shadows: [
                     Shadow(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Colors.black.withValues(alpha: 0.4),
                       blurRadius: 6,
                     ),
                   ],
@@ -464,7 +464,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               Text(
                 subtitle,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.55),
+                  color: Colors.white.withValues(alpha: 0.55),
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 0.3,
@@ -500,13 +500,13 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               Container(
                 width: 30,
                 height: 1,
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
               ),
               const SizedBox(width: 12),
               Text(
                 'Selecciona tu Escuela',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.0,
@@ -516,7 +516,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               Container(
                 width: 30,
                 height: 1,
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
               ),
             ],
           ),
@@ -558,25 +558,25 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: isSelected
-              ? Colors.white.withOpacity(0.25)
-              : Colors.white.withOpacity(0.08),
+              ? Colors.white.withValues(alpha: 0.25)
+              : Colors.white.withValues(alpha: 0.08),
           border: Border.all(
             color: isSelected
-                ? Colors.white.withOpacity(0.7)
-                : Colors.white.withOpacity(0.18),
+                ? Colors.white.withValues(alpha: 0.7)
+                : Colors.white.withValues(alpha: 0.18),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
+                    color: Colors.black.withValues(alpha: 0.25),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.12),
+                    color: Colors.black.withValues(alpha: 0.12),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -590,12 +590,12 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected
-                    ? Colors.white.withOpacity(0.2)
-                    : Colors.white.withOpacity(0.08),
+                    ? Colors.white.withValues(alpha: 0.2)
+                    : Colors.white.withValues(alpha: 0.08),
               ),
               child: Icon(
                 icon,
-                color: Colors.white.withOpacity(isSelected ? 1.0 : 0.7),
+                color: Colors.white.withValues(alpha: isSelected ? 1.0 : 0.7),
                 size: 22,
               ),
             ),
@@ -605,7 +605,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
               child: Text(
                 label,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(isSelected ? 1.0 : 0.85),
+                  color: Colors.white.withValues(alpha: isSelected ? 1.0 : 0.85),
                   fontSize: 14,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   letterSpacing: 0.3,
@@ -625,7 +625,7 @@ class _SeleccionPerfilScreenState extends State<SeleccionPerfilScreen>
                 border: Border.all(
                   color: isSelected
                       ? Colors.white
-                      : Colors.white.withOpacity(0.3),
+                      : Colors.white.withValues(alpha: 0.3),
                   width: 2,
                 ),
               ),

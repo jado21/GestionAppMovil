@@ -15,7 +15,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _iniciarTemporizador();
   }
 
-  _iniciarTemporizador() async {
+  Future<void> _iniciarTemporizador() async {
     // Esperamos 3 segundos mostrando el fondo y el logo
     await Future.delayed(const Duration(seconds: 3));
 
@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           // --- CAPA 2: FILTRO OSCURO ---
           Container(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
           ),
 
           // --- CAPA 3: CONTENIDO (LOGO Y TEXTO) ---

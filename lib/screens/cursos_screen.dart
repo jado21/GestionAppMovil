@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/horario_response.dart';
 import '../models/dia.dart';
+import '../utils/format_helpers.dart';
 
 class CursosScreen extends StatelessWidget {
   final HorarioResponse horarioResponse;
@@ -46,20 +47,20 @@ class CursosScreen extends StatelessWidget {
                       columnSpacing: 12,
                       horizontalMargin: 12,
                       dataRowMinHeight: 40,
-                    columns: [
+                    columns: const [
                       DataColumn(
                         label: SizedBox(
                           width: 220,
                           child: _CursoHeader(),
                         ),
                       ),
-                      const DataColumn(label: Text('Docente')),
-                      const DataColumn(label: Text('Tipo')),
-                      const DataColumn(label: Text('Día')),
-                      const DataColumn(label: Text('Hora Inicio')),
-                      const DataColumn(label: Text('Hora Fin')),
-                      const DataColumn(label: Text('Aula')),
-                      const DataColumn(label: Text('Grupo')),
+                      DataColumn(label: Text('Docente')),
+                      DataColumn(label: Text('Tipo')),
+                      DataColumn(label: Text('Día')),
+                      DataColumn(label: Text('Hora Inicio')),
+                      DataColumn(label: Text('Hora Fin')),
+                      DataColumn(label: Text('Aula')),
+                      DataColumn(label: Text('Grupo')),
                     ],
                       rows: rows,
                     ),
@@ -104,49 +105,22 @@ class CursosScreen extends StatelessWidget {
             ),
           ),
         ),
-        DataCell(Text(_displayValue(clase.docente))),
-        DataCell(Text(_formatTipo(clase.tipoClase))),
+        DataCell(Text(FormatHelpers.formatDocente(clase.docente))),
+        DataCell(Text(FormatHelpers.formatTipoClase(clase.tipoClase))),
         DataCell(Text(dia.dia)),
         DataCell(Text(clase.horaInicio)),
         DataCell(Text(clase.horaFin)),
-        DataCell(Text(_displayAula(clase.aula))),
+        DataCell(Text(FormatHelpers.formatAula(clase.aula))),
         DataCell(Text(grupo)),
       ]);
     }).toList();
   }
 
-  String _displayValue(String value) {
-    final normalized = value.trim().toLowerCase();
-    if (normalized == 'es none' || normalized == 'none' || normalized.isEmpty) {
-      return 'Sin asignar';
-    }
-    return value;
-  }
-
-  String _displayAula(String aula) {
-    if (aula == '0' || aula.trim().isEmpty || aula.toLowerCase() == 'none') {
-      return 'Sin asignar';
-    }
-    return aula;
-  }
-
-  String _formatTipo(String tipo) {
-    switch (tipo.toLowerCase()) {
-      case 'teoria':
-      case 'teoría':
-        return 'Teoría';
-      case 'laboratorio':
-        return 'Laboratorio';
-      case 'practica':
-      case 'práctica':
-        return 'Práctica';
-      default:
-        return tipo.isEmpty ? '-' : tipo;
-    }
-  }
 }
 
 class _CursoHeader extends StatelessWidget {
+  const _CursoHeader();
+
   @override
   Widget build(BuildContext context) {
     return const Row(

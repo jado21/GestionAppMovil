@@ -13,7 +13,6 @@ class SeleccionCicloScreen extends StatefulWidget {
 
 class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
     with TickerProviderStateMixin {
-  // Ciclos del II al X en romano (el I es exclusivo de Cachimbos)
   static const List<String> ciclosRomano = [
     'II', 'III', 'IV', 'V',
     'VI', 'VII', 'VIII', 'IX', 'X',
@@ -32,7 +31,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
   void initState() {
     super.initState();
 
-    // Animación del título
     _titleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
@@ -49,7 +47,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
       curve: Curves.easeOutCubic,
     ));
 
-    // Animación de los botones
     _buttonsController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
@@ -59,7 +56,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
       curve: Curves.easeOut,
     );
 
-    // Arrancar animaciones en secuencia
     _titleController.forward().then((_) {
       _buttonsController.forward();
     });
@@ -75,7 +71,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
   void _seleccionarCiclo(int index) {
     setState(() => _selectedIndex = index);
 
-    // Breve delay para ver el efecto de selección antes de navegar
     Future.delayed(const Duration(milliseconds: 300), () {
       if (!mounted) return;
       Navigator.push(
@@ -109,7 +104,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
           },
         ),
       ).then((_) {
-        // Resetear selección al volver
         if (mounted) setState(() => _selectedIndex = null);
       });
     });
@@ -118,7 +112,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // Responsive: 2 columnas en pantallas pequeñas, más si hay espacio
     final crossAxisCount = screenWidth > 600 ? 5 : 2;
 
     return Scaffold(
@@ -130,7 +123,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
       ),
       body: Stack(
         children: [
-          // Fondo con imagen
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -140,10 +132,8 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
             ),
           ),
 
-          // Overlay oscuro (estilo formulario)
-          Container(color: Colors.black.withOpacity(0.6)),
+          Container(color: Colors.black.withValues(alpha: 0.6)),
 
-          // Contenido
           SafeArea(
             child: Column(
               children: [
@@ -197,7 +187,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
 
                 const SizedBox(height: 30),
 
-                // Grid de botones de ciclos
                 Expanded(
                   child: FadeTransition(
                     opacity: _buttonsFade,
@@ -237,7 +226,6 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
   }
 }
 
-/// Botón individual con efecto glassmorphism (blur)
 class _CicloBlurButton extends StatefulWidget {
   final String label;
   final int numero;
@@ -285,7 +273,6 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
 
   @override
   Widget build(BuildContext context) {
-    // Animación de entrada escalonada
     final double delayFraction =
         (widget.delay / 800.0).clamp(0.0, 0.9);
     final entryAnimation = CurvedAnimation(
@@ -328,12 +315,12 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
               border: Border.all(
                 color: widget.isSelected
                     ? Colors.white
-                    : const Color(0xFFFFFFFF).withOpacity(_isPressed ? 0.4 : 0.24),
+                    : const Color(0xFFFFFFFF).withValues(alpha: _isPressed ? 0.4 : 0.24),
                 width: widget.isSelected ? 1.5 : 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(widget.isSelected ? 0.35 : 0.2),
+                  color: Colors.black.withValues(alpha: widget.isSelected ? 0.35 : 0.2),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -348,8 +335,8 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: widget.isSelected
-                        ? const Color(0xFFC92834).withOpacity(0.75)
-                        : const Color(0xFFC92834).withOpacity(_isPressed ? 0.65 : 0.6),
+                        ? const Color(0xFFC92834).withValues(alpha: 0.75)
+                        : const Color(0xFFC92834).withValues(alpha: _isPressed ? 0.65 : 0.6),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -373,7 +360,7 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                       Text(
                         'Ciclo ${widget.numero}',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.white.withValues(alpha: 0.6),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.7,
