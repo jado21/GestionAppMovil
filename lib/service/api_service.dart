@@ -22,6 +22,8 @@ class ApiService {
       return HorarioResponse.fromJson(
       jsonDecode(response.body)
       );
+    } else if (response.statusCode == 404) {
+      throw Exception('No hay un horario establecido para ese ciclo y seccion');
     } else {
       throw Exception('Error en el request');
     }
