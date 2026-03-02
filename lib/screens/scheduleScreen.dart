@@ -137,7 +137,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
 
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.6),
+      barrierColor: Colors.black.withValues(alpha: 0.6),
       builder: (context) {
         return Center(
           child: Material(
@@ -163,7 +163,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
+                      color: Colors.black.withValues(alpha: 0.25),
                       blurRadius: 30,
                       spreadRadius: 2,
                       offset: const Offset(0, 10),
@@ -181,7 +181,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                         gradient: LinearGradient(
                           colors: [
                             _obtenerColorCurso(clase.curso),
-                            _obtenerColorCurso(clase.curso).withOpacity(0.8),
+                            _obtenerColorCurso(clase.curso).withValues(alpha: 0.8),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -214,7 +214,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.white.withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Icon(
@@ -232,7 +232,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.white.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -479,7 +479,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
               color: rojoOscuro,
               border: Border(
                 left: BorderSide(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   width: 0.5,
                 ),
               ),
@@ -538,7 +538,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                   gradient: LinearGradient(
                     colors: [
                       colorFondo,
-                      colorFondo.withOpacity(0.85),
+                      colorFondo.withValues(alpha: 0.85),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -546,7 +546,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                   borderRadius: BorderRadius.circular(6),
                   boxShadow: [
                     BoxShadow(
-                      color: colorFondo.withOpacity(0.3),
+                      color: colorFondo.withValues(alpha: 0.3),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -573,13 +573,13 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 1),
                         decoration: BoxDecoration(
-                          color: colorTexto.withOpacity(0.18),
+                          color: colorTexto.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
                           _formatTipoClase(clase.tipoClase),
                           style: TextStyle(
-                            color: colorTexto.withOpacity(0.9),
+                            color: colorTexto.withValues(alpha: 0.9),
                             fontSize: 7,
                             fontWeight: FontWeight.w600,
                           ),
@@ -590,7 +590,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                     Text(
                       _formatAula(clase.aula),
                       style: TextStyle(
-                        color: colorTexto.withOpacity(0.75),
+                        color: colorTexto.withValues(alpha: 0.75),
                         fontSize: 7.5,
                       ),
                       maxLines: 1,
@@ -768,7 +768,7 @@ class _DetalleRow extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: iconColor.withOpacity(0.1),
+            color: iconColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: iconColor, size: 20),
@@ -793,10 +793,10 @@ class _DetalleRow extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: badgeColor!.withOpacity(0.1),
+                        color: badgeColor!.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: badgeColor!.withOpacity(0.3),
+                          color: badgeColor!.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),

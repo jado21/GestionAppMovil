@@ -176,7 +176,7 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
           ),
 
           // Overlay oscuro (estilo formulario)
-          Container(color: Colors.black.withOpacity(0.6)),
+          Container(color: Colors.black.withValues(alpha: 0.6)),
 
           // Contenido
           SafeArea(
@@ -199,10 +199,10 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFC92834).withOpacity(0.3),
+                              color: const Color(0xFFC92834).withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(30),
                               border: Border.all(
-                                color: const Color(0xFFC92834).withOpacity(0.6),
+                                color: const Color(0xFFC92834).withValues(alpha: 0.6),
                                 width: 1.5,
                               ),
                             ),
@@ -250,7 +250,7 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
                         Text(
                           '$_cantidadSecciones secciones disponibles',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
+                            color: Colors.white.withValues(alpha: 0.6),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
@@ -320,7 +320,7 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
                         Text(
                           'Cargando horario...',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
+                            color: Colors.white.withValues(alpha: 0.7),
                             fontSize: 13,
                           ),
                         ),
@@ -438,12 +438,12 @@ class _SeccionBlurButtonState extends State<_SeccionBlurButton>
               border: Border.all(
                 color: widget.isSelected
                     ? Colors.white
-                    : const Color(0xFFFFFFFF).withOpacity(_isPressed ? 0.4 : 0.24),
+                    : const Color(0xFFFFFFFF).withValues(alpha: _isPressed ? 0.4 : 0.24),
                 width: widget.isSelected ? 1.5 : 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(widget.isSelected ? 0.35 : 0.2),
+                  color: Colors.black.withValues(alpha: widget.isSelected ? 0.35 : 0.2),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -458,8 +458,8 @@ class _SeccionBlurButtonState extends State<_SeccionBlurButton>
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: widget.isSelected
-                        ? const Color(0xFFC92834).withOpacity(0.75)
-                        : const Color(0xFFC92834).withOpacity(_isPressed ? 0.65 : 0.6),
+                        ? const Color(0xFFC92834).withValues(alpha: 0.75)
+                        : const Color(0xFFC92834).withValues(alpha: _isPressed ? 0.65 : 0.6),
                   ),
                   child: widget.isLoading
                       ? const Center(
@@ -477,14 +477,14 @@ class _SeccionBlurButtonState extends State<_SeccionBlurButton>
                           children: [
                             Icon(
                               Icons.group_outlined,
-                              color: Colors.white.withOpacity(0.5),
+                              color: Colors.white.withValues(alpha: 0.5),
                               size: 24,
                             ),
                             const SizedBox(height: 8),
                             Text(
                               'Sección',
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.6),
+                                color: Colors.white.withValues(alpha: 0.6),
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
                               ),

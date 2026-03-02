@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/horario_response.dart';
-import '../models/dia.dart';
 
 class CursosScreen extends StatelessWidget {
   final HorarioResponse horarioResponse;
@@ -12,7 +11,8 @@ class CursosScreen extends StatelessWidget {
     const Color rojoOscuro = Color(0xFFA80010);
     const Color headerBackground = Color(0xFFF5F5F5);
 
-    final rows = _buildRows(horarioResponse);
+    final cursosAgrupados = _agruparCursos(horarioResponse);
+    final rows = _buildRows(cursosAgrupados, horarioResponse.grupo);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -45,7 +45,8 @@ class CursosScreen extends StatelessWidget {
                       headingRowColor: WidgetStateProperty.all(headerBackground),
                       columnSpacing: 12,
                       horizontalMargin: 12,
-                      dataRowMinHeight: 40,
+                      dataRowMinHeight: 34,
+                      dataRowMaxHeight: double.infinity,
                     columns: [
                       DataColumn(
                         label: SizedBox(
@@ -70,21 +71,51 @@ class CursosScreen extends StatelessWidget {
     );
   }
 
-  List<DataRow> _buildRows(HorarioResponse response) {
-    final rows = <DataRow>[];
-    final grupo = response.grupo;
+  Map<String, _CursoAgrupado> _agruparCursos(HorarioResponse response) {
+    final cursos = <String, _CursoAgrupado>{};
 
     for (final horario in response.horarios) {
       for (final dia in horario.dias) {
-        rows.addAll(_rowsForDia(dia, grupo));
+        for (final clase in dia.clases) {
+          final nombreCurso = clase.curso.trim();
+          if (nombreCurso.isEmpty) continue;
+
+          final key = nombreCurso.toLowerCase();
+          final curso = cursos.putIfAbsent(
+            key,
+            () => _CursoAgrupado(nombre: nombreCurso),
+          );
+
+          curso.sesiones.add(
+            _SesionCurso(
+              docente: _displayValue(clase.docente),
+              tipo: _formatTipo(clase.tipoClase),
+              dia: dia.dia,
+              horaInicio: clase.horaInicio,
+              horaFin: clase.horaFin,
+              aula: _displayAula(clase.aula),
+            ),
+          );
+        }
       }
     }
 
-    return rows;
+    for (final curso in cursos.values) {
+      curso.sesiones.sort((a, b) {
+        final diaComp = _ordenDia(a.dia).compareTo(_ordenDia(b.dia));
+        if (diaComp != 0) return diaComp;
+        return a.horaInicio.compareTo(b.horaInicio);
+      });
+    }
+
+    return cursos;
   }
 
-  List<DataRow> _rowsForDia(Dia dia, String grupo) {
-    return dia.clases.map((clase) {
+  List<DataRow> _buildRows(Map<String, _CursoAgrupado> cursos, String grupo) {
+    final listaCursos = cursos.values.toList()
+      ..sort((a, b) => a.nombre.compareTo(b.nombre));
+
+    return listaCursos.map((curso) {
       return DataRow(cells: [
         DataCell(
           SizedBox(
@@ -97,22 +128,72 @@ class CursosScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                clase.curso,
+                curso.nombre,
                 softWrap: true,
                 style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
         ),
-        DataCell(Text(_displayValue(clase.docente))),
-        DataCell(Text(_formatTipo(clase.tipoClase))),
-        DataCell(Text(dia.dia)),
-        DataCell(Text(clase.horaInicio)),
-        DataCell(Text(clase.horaFin)),
-        DataCell(Text(_displayAula(clase.aula))),
+        DataCell(_buildDocenteCell(curso.sesiones)),
+        DataCell(_buildMiniRows(curso.sesiones, (s) => s.tipo, width: 110)),
+        DataCell(_buildMiniRows(curso.sesiones, (s) => s.dia, width: 110)),
+        DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaInicio, width: 95)),
+        DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaFin, width: 95)),
+        DataCell(_buildMiniRows(curso.sesiones, (s) => s.aula, width: 115)),
         DataCell(Text(grupo)),
       ]);
     }).toList();
+  }
+
+  Widget _buildDocenteCell(List<_SesionCurso> sesiones) {
+    if (sesiones.isEmpty) return const Text('-');
+    return Text(_docentePrincipal(sesiones));
+  }
+
+  Widget _buildMiniRows(
+    List<_SesionCurso> sesiones,
+    String Function(_SesionCurso sesion) getText,
+    {double width = 170}
+  ) {
+    if (sesiones.isEmpty) return const Text('-');
+
+    return SizedBox(
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: sesiones.map((sesion) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1.5),
+            child: Text(
+              getText(sesion),
+              style: const TextStyle(fontSize: 11.5, height: 1.1),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  String _docentePrincipal(List<_SesionCurso> sesiones) {
+    final docentes = sesiones.map((s) => s.docente).toSet().toList();
+    final primeroValido = docentes.firstWhere(
+      (d) => d.trim().isNotEmpty && d != 'Sin asignar',
+      orElse: () => docentes.first,
+    );
+    return primeroValido;
+  }
+
+  int _ordenDia(String dia) {
+    final d = dia.toLowerCase();
+    if (d.startsWith('lun')) return 1;
+    if (d.startsWith('mar')) return 2;
+    if (d.startsWith('mie')) return 3;
+    if (d.startsWith('jue')) return 4;
+    if (d.startsWith('vie')) return 5;
+    if (d.startsWith('sab')) return 6;
+    return 99;
   }
 
   String _displayValue(String value) {
@@ -127,7 +208,7 @@ class CursosScreen extends StatelessWidget {
     if (aula == '0' || aula.trim().isEmpty || aula.toLowerCase() == 'none') {
       return 'Sin asignar';
     }
-    return aula;
+    return 'Aula $aula';
   }
 
   String _formatTipo(String tipo) {
@@ -144,6 +225,31 @@ class CursosScreen extends StatelessWidget {
         return tipo.isEmpty ? '-' : tipo;
     }
   }
+}
+
+class _CursoAgrupado {
+  final String nombre;
+  final List<_SesionCurso> sesiones = [];
+
+  _CursoAgrupado({required this.nombre});
+}
+
+class _SesionCurso {
+  final String docente;
+  final String tipo;
+  final String dia;
+  final String horaInicio;
+  final String horaFin;
+  final String aula;
+
+  _SesionCurso({
+    required this.docente,
+    required this.tipo,
+    required this.dia,
+    required this.horaInicio,
+    required this.horaFin,
+    required this.aula,
+  });
 }
 
 class _CursoHeader extends StatelessWidget {

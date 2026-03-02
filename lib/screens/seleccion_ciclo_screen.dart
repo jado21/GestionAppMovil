@@ -139,7 +139,7 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
           ),
 
           // Overlay oscuro (estilo formulario)
-          Container(color: Colors.black.withOpacity(0.6)),
+          Container(color: Colors.black.withValues(alpha: 0.6)),
 
           // Contenido
           SafeArea(
@@ -326,12 +326,12 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
               border: Border.all(
                 color: widget.isSelected
                     ? Colors.white
-                    : const Color(0xFFFFFFFF).withOpacity(_isPressed ? 0.4 : 0.24),
+                    : const Color(0xFFFFFFFF).withValues(alpha: _isPressed ? 0.4 : 0.24),
                 width: widget.isSelected ? 1.5 : 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(widget.isSelected ? 0.35 : 0.2),
+                  color: Colors.black.withValues(alpha: widget.isSelected ? 0.35 : 0.2),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -346,8 +346,8 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: widget.isSelected
-                        ? const Color(0xFFC92834).withOpacity(0.75)
-                        : const Color(0xFFC92834).withOpacity(_isPressed ? 0.65 : 0.6),
+                        ? const Color(0xFFC92834).withValues(alpha: 0.75)
+                        : const Color(0xFFC92834).withValues(alpha: _isPressed ? 0.65 : 0.6),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -371,7 +371,7 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
                       Text(
                         'Ciclo ${widget.numero}',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.white.withValues(alpha: 0.6),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.7,

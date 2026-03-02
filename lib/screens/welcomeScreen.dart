@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           // --- CAPA 2: FILTRO OSCURO ---
           Container(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
           ),
 
           // --- CAPA 3: CONTENIDO (LOGO Y TEXTO) ---
