@@ -12,13 +12,13 @@ class CursosScreen extends StatelessWidget {
     const Color headerBackground = Color(0xFFF5F5F5);
 
     final cursosAgrupados = _agruparCursos(horarioResponse);
-    final rows = _buildRows(cursosAgrupados, horarioResponse.grupo);
+    final rows = _buildRows(cursosAgrupados, '');
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'Cursos - Ciclo ${horarioResponse.ciclo}, Grupo ${horarioResponse.grupo}',
+        title: const Text(
+          'Cursos - Ciclo ',
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         backgroundColor: rojoOscuro,
@@ -60,7 +60,7 @@ class CursosScreen extends StatelessWidget {
                       const DataColumn(label: Text('Hora Inicio')),
                       const DataColumn(label: Text('Hora Fin')),
                       const DataColumn(label: Text('Aula')),
-                      const DataColumn(label: Text('Grupo')),
+                      //const DataColumn(label: Text('Grupo')),
                     ],
                       rows: rows,
                     ),
@@ -72,44 +72,45 @@ class CursosScreen extends StatelessWidget {
   }
 
   Map<String, _CursoAgrupado> _agruparCursos(HorarioResponse response) {
-    final cursos = <String, _CursoAgrupado>{};
+  final cursos = <String, _CursoAgrupado>{};
 
-    for (final horario in response.horarios) {
-      for (final dia in horario.dias) {
-        for (final clase in dia.clases) {
-          final nombreCurso = clase.curso.trim();
-          if (nombreCurso.isEmpty) continue;
+  for (final entry in response.horarios.entries) {
+    final nombreDia = entry.key;
+    final clases = entry.value;
 
-          final key = nombreCurso.toLowerCase();
-          final curso = cursos.putIfAbsent(
-            key,
-            () => _CursoAgrupado(nombre: nombreCurso),
-          );
+    for (final clase in clases) {
+      final nombreCurso = clase.curso.trim();
+      if (nombreCurso.isEmpty) continue;
 
-          curso.sesiones.add(
-            _SesionCurso(
-              docente: _displayValue(clase.docente),
-              tipo: _formatTipo(clase.tipoClase),
-              dia: dia.dia,
-              horaInicio: clase.horaInicio,
-              horaFin: clase.horaFin,
-              aula: _displayAula(clase.aula),
-            ),
-          );
-        }
-      }
+      final key = nombreCurso.toLowerCase();
+      final curso = cursos.putIfAbsent(
+        key,
+        () => _CursoAgrupado(nombre: nombreCurso),
+      );
+
+      curso.sesiones.add(
+        _SesionCurso(
+          docente: _displayValue(clase.docente),
+          tipo: _formatTipo(clase.tipo),
+          dia: nombreDia,
+          horaInicio: clase.horaInicio,
+          horaFin: clase.horaFin,
+          aula: _displayAula(clase.aula),
+        ),
+      );
     }
-
-    for (final curso in cursos.values) {
-      curso.sesiones.sort((a, b) {
-        final diaComp = _ordenDia(a.dia).compareTo(_ordenDia(b.dia));
-        if (diaComp != 0) return diaComp;
-        return a.horaInicio.compareTo(b.horaInicio);
-      });
-    }
-
-    return cursos;
   }
+
+  for (final curso in cursos.values) {
+    curso.sesiones.sort((a, b) {
+      final diaComp = _ordenDia(a.dia).compareTo(_ordenDia(b.dia));
+      if (diaComp != 0) return diaComp;
+      return a.horaInicio.compareTo(b.horaInicio);
+    });
+  }
+
+  return cursos;
+}
 
   List<DataRow> _buildRows(Map<String, _CursoAgrupado> cursos, String grupo) {
     final listaCursos = cursos.values.toList()
@@ -141,7 +142,7 @@ class CursosScreen extends StatelessWidget {
         DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaInicio, width: 95)),
         DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaFin, width: 95)),
         DataCell(_buildMiniRows(curso.sesiones, (s) => s.aula, width: 115)),
-        DataCell(Text(grupo)),
+        //DataCell(Text(grupo)),
       ]);
     }).toList();
   }

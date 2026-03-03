@@ -104,7 +104,7 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
       final data = await ApiService.enviarCicloGrupo(
         widget.ciclo,
         seccionLabel,
-        widget.escuela,
+        "57",
       );
 
       if (!mounted) return;

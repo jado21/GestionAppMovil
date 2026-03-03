@@ -1,23 +1,20 @@
 import 'horario.dart';
+import 'clase.dart';
 
 class HorarioResponse {
-  final String ciclo;
-  final String grupo;
-  final List<Horario> horarios;
+  final Map<String, List<Clase>> horarios;
 
-  HorarioResponse({
-    required this.ciclo,
-    required this.grupo,
-    required this.horarios,
-  });
+  HorarioResponse({required this.horarios});
 
   factory HorarioResponse.fromJson(Map<String, dynamic> json) {
-    return HorarioResponse(
-      ciclo: json['ciclo']?.toString() ?? '',
-      grupo: json['grupo']?.toString() ?? '',
-      horarios: (json['horarios'] as List)
-          .map((e) => Horario.fromJson(e))
-          .toList(),
-    );
+    Map<String, List<Clase>> resultado = {};
+
+    json.forEach((dia, listaClases) {
+      resultado[dia] = (listaClases as List)
+          .map((item) => Clase.fromJson(item))
+          .toList();
+    });
+
+    return HorarioResponse(horarios: resultado);
   }
 }

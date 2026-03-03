@@ -95,8 +95,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
 
 
   void _mostrarDetalleClase(Clase clase, String dia) {
-    final colorTipo = _obtenerColorTipo(clase.tipoClase);
-    final iconTipo = _obtenerIconoTipo(clase.tipoClase);
+    final colorTipo = _obtenerColorTipo(clase.tipo);
+    final iconTipo = _obtenerIconoTipo(clase.tipo);
 
     showDialog(
       context: context,
@@ -233,7 +233,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                             icon: iconTipo,
                             iconColor: colorTipo,
                             label: 'Tipo de clase',
-                            value: FormatHelpers.formatTipoClase(clase.tipoClase),
+                            value: FormatHelpers.formatTipoClase(clase.tipo),
                             badgeColor: colorTipo,
                           ),
                           const SizedBox(height: 14),
@@ -285,7 +285,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
 
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) => pdf.save(),
-      name: 'Horario_Grupo_${widget.horarioResponse.grupo}.pdf',
+      name: 'Horario_Grupo.pdf',
     );
   }
 
@@ -301,9 +301,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        title: Text(
-          'Horario - Grupo: ${widget.horarioResponse.grupo}',
-          style: const TextStyle(
+        title: const Text(
+          'Horario ',
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 17,
@@ -459,14 +459,19 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     List<Widget> bloques = [];
     if (widget.horarioResponse.horarios.isEmpty) return [];
 
-    final diasData = widget.horarioResponse.horarios.first.dias;
+    //final diasData = widget.horarioResponse.horarios.first.dias;
 
-    for (var diaData in diasData) {
+    for (var diaData in diasSemana) {
+
+      final clasesDelDia=widget.horarioResponse.horarios[diaData];
+
+      if (clasesDelDia == null) continue;
+
       int indexColumna = diasSemana.indexWhere(
-          (d) => d.toLowerCase().contains(diaData.dia.toLowerCase().substring(0, 3)));
+          (d) => d.toLowerCase().contains(diaData.toLowerCase().substring(0, 3)));
       if (indexColumna == -1) continue;
 
-      for (var clase in diaData.clases) {
+      for (var clase in clasesDelDia) {
         final double inicio = _parseHora(clase.horaInicio);
         final double fin = _parseHora(clase.horaFin);
 
@@ -486,7 +491,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
             width: widthColumnaDia - 3,
             height: height - 2,
             child: GestureDetector(
-              onTap: () => _mostrarDetalleClase(clase, diaData.dia),
+              onTap: () => _mostrarDetalleClase(clase, diaData),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                 clipBehavior: Clip.hardEdge,
@@ -526,7 +531,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
-                    if (clase.tipoClase.isNotEmpty)
+                    if (clase.tipo.isNotEmpty)
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 1),
@@ -535,7 +540,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
-                          FormatHelpers.formatTipoClase(clase.tipoClase),
+                          FormatHelpers.formatTipoClase(clase.tipo),
                           style: TextStyle(
                             color: colorTexto.withValues(alpha: 0.9),
                             fontSize: 7,
@@ -635,14 +640,21 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   List<pw.Widget> _generarBloquesPdf(int horaInicioGrid) {
     List<pw.Widget> bloques = [];
     if (widget.horarioResponse.horarios.isEmpty) return [];
-    final diasData = widget.horarioResponse.horarios.first.dias;
+    
+    //final diasData = widget.horarioResponse.horarios.first.dias;
 
-    for (var diaData in diasData) {
+
+    for (var diaData in diasSemana) {
+
+      final clasesDelDia = widget.horarioResponse.horarios[diaData];
+
+      if (clasesDelDia == null) continue;
+
       int indexCol = diasSemana.indexWhere(
-          (d) => d.toLowerCase().contains(diaData.dia.toLowerCase().substring(0, 3)));
+          (d) => d.toLowerCase().contains(diaData.toLowerCase().substring(0, 3)));
       if (indexCol == -1) continue;
 
-      for (var clase in diaData.clases) {
+      for (var clase in clasesDelDia) {
         final double inicio = _parseHora(clase.horaInicio);
         final double fin = _parseHora(clase.horaFin);
         final double top =
@@ -681,7 +693,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                   ),
                   pw.SizedBox(height: 2),
                   pw.Text(
-                    FormatHelpers.formatTipoClase(clase.tipoClase),
+                    FormatHelpers.formatTipoClase(clase.tipo),
                     style: pw.TextStyle(color: colorT, fontSize: 6),
                   ),
                   pw.SizedBox(height: 1),
