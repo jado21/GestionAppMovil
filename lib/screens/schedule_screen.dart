@@ -30,18 +30,18 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
   ];
 
+  // PALETA DE COLORES (Convertida al formato Flutter)
   final Map<String, Color> mapaColoresCursos = {
-    'REDACCIÓN': const Color(0xFFE53935),
-    'CALCULO': const Color(0xFFFB8C00),
-    'CÁLCULO': const Color(0xFFFB8C00),
-    'ÁLGEBRA': const Color(0xFF1E88E5),
-    'ALGEBRA': const Color(0xFF1E88E5),
-    'METODOS DE ESTUDIOS': const Color(0xFF8E24AA),
-    'BIOLOGÍA': const Color(0xFF43A047),
-    'PROGRAMACIÓN': const Color(0xFF6D4C41),
-    'MEDIO AMBIENTE': const Color(0xFF00897B),
-    'DESARROLLO': const Color(0xFF546E7A),
-    'COMUNICACIÓN': const Color(0xFFE53935),
+  'REDACCIÓN': const Color(0xFF3B82F6), // Azul
+  'CÁLCULO': const Color(0xFF10B981),   // Verde Esmeralda
+  'ÁLGEBRA': const Color(0xFFF97316),   // Naranja
+  'METODOS': const Color(0xFFA855F7),   // Púrpura
+  'BIOLOGÍA': const Color(0xFFF43F5E),  // Rosa fuerte
+  'PROGRAMACIÓN': const Color(0xFF14B8A6), // Teal
+  'MEDIO AMBIENTE': const Color(0xFFF59E0B), // Ámbar
+  'DESARROLLO': const Color(0xFF0EA5E9),    // Azul cielo
+  'FÍSICA': const Color(0xFFEF4444),        // Rojo
+  'QUÍMICA': const Color(0xFF6366F1),       // Índigo
   };
 
   Color _obtenerColorCurso(String nombre) {
