@@ -489,6 +489,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
               onTap: () => _mostrarDetalleClase(clase, diaData.dia),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -507,7 +508,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -552,7 +555,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                ),
+                ),),
               ),
             ),
           ),
