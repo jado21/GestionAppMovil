@@ -17,7 +17,13 @@ class ApiService {
       },
     );
 
-    final response = await http.get(uri);
+    final response = await http.get(
+      uri,
+      headers: {
+        'Authorization': 'Token 251b33a5af4a22f3889800890351ac79bfcb417f',
+        'Content-Type': 'application/json', 
+      },
+      );
 
     if (response.statusCode == 200) {
       return HorarioResponse.fromJson(

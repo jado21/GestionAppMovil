@@ -5,6 +5,28 @@ class CursosScreen extends StatelessWidget {
   final HorarioResponse horarioResponse;
 
   const CursosScreen({super.key, required this.horarioResponse});
+  
+  static const Map<String, Color> mapaColoresCursos = {
+    'REDACCIÓN': Color(0xFF3B82F6),
+    'CÁLCULO': Color(0xFF10B981),
+    'CALCULO': Color(0xFF10B981), // Versión sin tilde por si acaso
+    'ÁLGEBRA': Color(0xFFF97316),
+    'METODOS': Color(0xFFA855F7),
+    'BIOLOGÍA': Color(0xFFF43F5E),
+    'PROGRAMACIÓN': Color(0xFF14B8A6),
+    'MEDIO AMBIENTE': Color(0xFFF59E0B),
+    'DESARROLLO': Color(0xFF0EA5E9),
+    'FÍSICA': Color(0xFFEF4444),
+    'QUÍMICA': Color(0xFF6366F1),
+  };
+
+  Color _obtenerColorCurso(String nombre) {
+    String n = nombre.toUpperCase();
+    for (var e in mapaColoresCursos.entries) {
+      if (n.contains(e.key)) return e.value;
+    }
+    return Colors.blueGrey; 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +69,14 @@ class CursosScreen extends StatelessWidget {
                       horizontalMargin: 12,
                       dataRowMinHeight: 34,
                       dataRowMaxHeight: double.infinity,
-                    columns: [
-                      DataColumn(
-                        label: SizedBox(
-                          width: 220,
-                          child: _CursoHeader(),
+                      columns: [
+                        DataColumn(
+                          label: SizedBox(
+                            width: 220,
+                            child: _CursoHeader(),
+                          ),
                         ),
-                      ),
+                      
                       const DataColumn(label: Text('Docente')),
                       const DataColumn(label: Text('Tipo')),
                       const DataColumn(label: Text('Día')),
@@ -70,6 +93,8 @@ class CursosScreen extends StatelessWidget {
       ),
     );
   }
+
+  // ... (Métodos _agruparCursos, _docentePrincipal, etc. se mantienen igual)
 
   Map<String, _CursoAgrupado> _agruparCursos(HorarioResponse response) {
   final cursos = <String, _CursoAgrupado>{};
@@ -117,6 +142,11 @@ class CursosScreen extends StatelessWidget {
       ..sort((a, b) => a.nombre.compareTo(b.nombre));
 
     return listaCursos.map((curso) {
+      // Obtenemos el color dinámico para este curso específico
+      final Color colorFondo = _obtenerColorCurso(curso.nombre);
+      // Calculamos si el texto debe ser blanco o negro según el fondo
+      final Color colorTexto = colorFondo.computeLuminance() > 0.6 ? Colors.black87 : Colors.white;
+
       return DataRow(cells: [
         DataCell(
           SizedBox(
@@ -125,13 +155,17 @@ class CursosScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.red[300],
+                color: colorFondo, // COLOR DINÁMICO APLICADO
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 curso.nombre,
                 softWrap: true,
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: colorTexto, // COLOR DE TEXTO INTELIGENTE
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
@@ -146,6 +180,8 @@ class CursosScreen extends StatelessWidget {
       ]);
     }).toList();
   }
+
+  // ... (Resto de métodos auxiliares: _buildDocenteCell, _buildMiniRows, _ordenDia, etc.)
 
   Widget _buildDocenteCell(List<_SesionCurso> sesiones) {
     if (sesiones.isEmpty) return const Text('-');
@@ -227,6 +263,8 @@ class CursosScreen extends StatelessWidget {
     }
   }
 }
+
+// ... (Clases auxiliares _CursoAgrupado, _SesionCurso, _CursoHeader se mantienen igual)
 
 class _CursoAgrupado {
   final String nombre;
