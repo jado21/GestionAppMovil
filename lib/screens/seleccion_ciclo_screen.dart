@@ -4,8 +4,13 @@ import 'seleccion_seccion_screen.dart';
 
 class SeleccionCicloScreen extends StatefulWidget {
   final String escuela;
+  final String escuelaId;
 
-  const SeleccionCicloScreen({super.key, required this.escuela});
+  const SeleccionCicloScreen({
+    super.key,
+    required this.escuela,
+    required this.escuelaId,
+  });
 
   @override
   State<SeleccionCicloScreen> createState() => _SeleccionCicloScreenState();
@@ -14,7 +19,7 @@ class SeleccionCicloScreen extends StatefulWidget {
 class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
     with TickerProviderStateMixin {
   static const List<String> ciclosRomano = [
-    'II', 'III', 'IV', 'V',
+    'I', 'II', 'III', 'IV', 'V',
     'VI', 'VII', 'VIII', 'IX', 'X',
   ];
 
@@ -80,10 +85,10 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
           reverseTransitionDuration: const Duration(milliseconds: 400),
           pageBuilder: (context, animation, secondaryAnimation) {
             return SeleccionSeccionScreen(
-              esCachimbo: false,
-              ciclo: (index + 2).toString(),
+              ciclo: (index + 1).toString(),
               cicloRomano: ciclosRomano[index],
               escuela: widget.escuela,
+              escuelaId: widget.escuelaId,
             );
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -152,13 +157,18 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
                           size: 50,
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'Perfil: Regular',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.5,
+                        // Mostrar la escuela seleccionada
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            widget.escuela,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.5,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -204,7 +214,7 @@ class _SeleccionCicloScreenState extends State<SeleccionCicloScreen>
                         itemBuilder: (context, index) {
                           return _CicloBlurButton(
                             label: ciclosRomano[index],
-                            numero: index + 2,
+                            numero: index + 1,
                             isSelected: _selectedIndex == index,
                             delay: index * 80,
                             animationController: _buttonsController,
@@ -377,4 +387,3 @@ class _CicloBlurButtonState extends State<_CicloBlurButton>
     );
   }
 }
-
