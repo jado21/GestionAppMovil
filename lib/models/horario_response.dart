@@ -1,4 +1,4 @@
-import 'horario.dart';
+
 import 'clase.dart';
 
 class HorarioResponse {

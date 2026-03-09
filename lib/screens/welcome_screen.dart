@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_test/screens/seleccion_perfil_screen.dart'; 
+import 'package:mobile_app_test/screens/seleccion_horario_screen.dart'; 
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -21,11 +21,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     if (!mounted) return; 
 
-    // Navegación a la selección de perfil (Cachimbo/Regular)
+    // Navegación a la pantalla de selección de horario
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const SeleccionPerfilScreen(),
+        builder: (context) => const SeleccionHorarioScreen(),
       ),
     );
   }

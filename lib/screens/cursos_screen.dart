@@ -41,7 +41,7 @@ class CursosScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Cursos - Ciclo ',
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         backgroundColor: rojoOscuro,
         iconTheme: const IconThemeData(color: Colors.white),
