@@ -274,8 +274,8 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   Future<void> _exportarPDF() async {
     final pdf = pw.Document();
 
-    final String tituloPrincipal = 'Horario ${widget.periodo} | Ciclo ${widget.ciclo} | Grupo ${widget.grupo}';
-    final String subtitulo = (widget.ciclo == '1' || widget.ciclo == 'I') ? '' : widget.escuela;
+    final String tituloPrincipal = 'Horario ${widget.periodo} | Ciclo ${widget.ciclo}';
+    final String subtitulo = (widget.ciclo == '1' || widget.ciclo == 'I') ? 'Grupo ${widget.grupo}' : 'Grupo ${widget.grupo} | ${widget.escuela}';
     final double altoHeaderPdf = subtitulo.isEmpty ? 35.0 : 45.0;
 
     final double anchoColumnaDiaPdf = (PdfPageFormat.a4.width - anchoColumnaHora) / diasSemana.length;
@@ -355,11 +355,11 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     final int totalFilas = horaFinGlobal - horaInicioGlobal + 1;
     final double altoTotal = altoCabecera + (totalFilas * altoHora);
 
-    final String tituloPrincipal = 'Horario ${widget.periodo} • Ciclo ${widget.ciclo} • Grupo ${widget.grupo}';
+    final String tituloPrincipal = 'Horario ${widget.periodo} • Ciclo ${widget.ciclo}';
         
     final String subtitulo = (widget.ciclo == '1' || widget.ciclo == 'I')
-        ? ''
-        : widget.escuela;
+        ? 'Grupo ${widget.grupo}'
+        : 'Grupo ${widget.grupo} • ${widget.escuela}';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),

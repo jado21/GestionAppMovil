@@ -48,11 +48,11 @@ class CursosScreen extends StatelessWidget {
     final cursosAgrupados = _agruparCursos(horarioResponse);
     final filas = _construirFilas(cursosAgrupados, '');
 
-    final String tituloPrincipal = 'Cursos $periodo | Ciclo $ciclo | Grupo $grupo';
+    final String tituloPrincipal = 'Cursos $periodo • Ciclo $ciclo';
         
     final String subtitulo = (ciclo == '1' || ciclo == 'I')
-        ? ''
-        : escuela;
+        ? 'Grupo $grupo'
+        : 'Grupo $grupo • $escuela';
 
     return Scaffold(
       backgroundColor: Colors.white,
