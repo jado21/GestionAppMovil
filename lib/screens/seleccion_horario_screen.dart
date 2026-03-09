@@ -1,8 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/escuela.dart';
 import '../service/api_service.dart';
-import 'schedule_screen.dart';
+import 'horario_screen.dart';
 
 class SeleccionHorarioScreen extends StatefulWidget {
   const SeleccionHorarioScreen({super.key});
@@ -180,7 +181,13 @@ class _SeleccionHorarioScreenState extends State<SeleccionHorarioScreen>
           transitionDuration: const Duration(milliseconds: 500),
           reverseTransitionDuration: const Duration(milliseconds: 400),
           pageBuilder: (context, animation, secondaryAnimation) {
-            return ResultadoScreen(horarioResponse: data);
+            return ResultadoScreen(
+              horarioResponse: data,
+              periodo: periodo,
+              escuela: _selectedEscuela!.nombre,
+              ciclo: ciclosRomano[_selectedCicloIndex!],
+              grupo: grupo,
+            );
           },
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             final curved = CurvedAnimation(
@@ -223,6 +230,18 @@ class _SeleccionHorarioScreenState extends State<SeleccionHorarioScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app_rounded, color: Colors.white, size: 28),
+            onPressed: () => SystemNavigator.pop(),
+            tooltip: 'Salir',
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: Stack(
         children: [
           // Fondo con imagen

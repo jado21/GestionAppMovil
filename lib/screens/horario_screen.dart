@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -9,18 +10,29 @@ import 'cursos_screen.dart';
 
 class ResultadoScreen extends StatefulWidget {
   final HorarioResponse horarioResponse;
+  final String periodo;
+  final String escuela;
+  final String ciclo;
+  final String grupo;
 
-  const ResultadoScreen({super.key, required this.horarioResponse});
+  const ResultadoScreen({
+    super.key,
+    required this.horarioResponse,
+    required this.periodo,
+    required this.escuela,
+    required this.ciclo,
+    required this.grupo,
+  });
 
   @override
   State<ResultadoScreen> createState() => _ResultadoScreenState();
 }
 
 class _ResultadoScreenState extends State<ResultadoScreen> {
-  final double widthColumnaHora = 44.0;
-  final double widthColumnaDia = 90.0;
-  final double heightHora = 55.0;
-  final double heightHeader = 40.0;
+  final double anchoColumnaHora = 44.0;
+  double anchoColumnaDia = 90.0;
+  final double altoHora = 55.0;
+  final double altoCabecera = 40.0;
   final Color rojoOscuro = const Color(0xFFA80010);
 
   final int horaInicioGlobal = 8;
@@ -262,21 +274,62 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   Future<void> _exportarPDF() async {
     final pdf = pw.Document();
 
+    final String tituloPrincipal = 'Horario ${widget.periodo} | Ciclo ${widget.ciclo} | Grupo ${widget.grupo}';
+    final String subtitulo = (widget.ciclo == '1' || widget.ciclo == 'I') ? '' : widget.escuela;
+    final double altoHeaderPdf = subtitulo.isEmpty ? 35.0 : 45.0;
+
+    final double anchoColumnaDiaPdf = (PdfPageFormat.a4.width - anchoColumnaHora) / diasSemana.length;
+
     final double anchoTotal =
-        widthColumnaHora + (diasSemana.length * widthColumnaDia);
+        anchoColumnaHora + (diasSemana.length * anchoColumnaDiaPdf);
     final double altoTotal =
-        heightHeader + ((horaFinGlobal - horaInicioGlobal + 1) * heightHora);
+        altoCabecera + ((horaFinGlobal - horaInicioGlobal + 1) * altoHora) + altoHeaderPdf;
 
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat(anchoTotal, altoTotal, marginAll: 0),
         build: (pw.Context context) {
-          return pw.Stack(
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              _dibujarGrillaPdf(
-                  horaFinGlobal - horaInicioGlobal + 1, horaInicioGlobal, anchoTotal),
-              _dibujarCabecerasPdf(),
-              ..._generarBloquesPdf(horaInicioGlobal),
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(left: 10, top: 10, right: 10),
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(
+                      tituloPrincipal,
+                      style: pw.TextStyle(
+                        fontSize: 14,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    if (subtitulo.isNotEmpty) ...[
+                      pw.SizedBox(height: 3),
+                      pw.Text(
+                        subtitulo,
+                        style: const pw.TextStyle(
+                          fontSize: 10,
+                          color: PdfColors.grey700,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              pw.SizedBox(height: 5),
+              pw.SizedBox(
+                width: anchoTotal,
+                height: altoTotal - altoHeaderPdf - 5,
+                child: pw.Stack(
+                  children: [
+                    _dibujarGrillaPdf(
+                        horaFinGlobal - horaInicioGlobal + 1, horaInicioGlobal, anchoTotal),
+                    _dibujarCabecerasPdf(anchoColumnaDiaPdf),
+                    ..._generarBloquesPdf(horaInicioGlobal, anchoColumnaDiaPdf),
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -293,21 +346,48 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double anchoPantalla = MediaQuery.of(context).size.width;
+    final double anchoCalculado = (anchoPantalla - anchoColumnaHora) / diasSemana.length;
+    anchoColumnaDia = anchoCalculado > 90.0 ? anchoCalculado : 90.0;
+
     final double anchoTotal =
-        widthColumnaHora + (diasSemana.length * widthColumnaDia);
+        anchoColumnaHora + (diasSemana.length * anchoColumnaDia);
     final int totalFilas = horaFinGlobal - horaInicioGlobal + 1;
-    final double altoTotal = heightHeader + (totalFilas * heightHora);
+    final double altoTotal = altoCabecera + (totalFilas * altoHora);
+
+    final String tituloPrincipal = 'Horario ${widget.periodo} • Ciclo ${widget.ciclo} • Grupo ${widget.grupo}';
+        
+    final String subtitulo = (widget.ciclo == '1' || widget.ciclo == 'I')
+        ? ''
+        : widget.escuela;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
-        title: const Text(
-          'Horario ',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              tituloPrincipal,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (subtitulo.isNotEmpty)
+              Text(
+                subtitulo,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+          ],
         ),
         backgroundColor: rojoOscuro,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -328,7 +408,12 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
                   reverseTransitionDuration: const Duration(milliseconds: 300),
                   pageBuilder: (context, animation, secondaryAnimation) {
                     return CursosScreen(
-                        horarioResponse: widget.horarioResponse);
+                      horarioResponse: widget.horarioResponse,
+                      periodo: widget.periodo,
+                      escuela: widget.escuela,
+                      ciclo: widget.ciclo,
+                      grupo: widget.grupo,
+                    );
                   },
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
@@ -351,6 +436,11 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
               );
             },
             tooltip: 'Ver cursos',
+          ),
+          IconButton(
+            icon: const Icon(Icons.exit_to_app_rounded, size: 22),
+            onPressed: () => SystemNavigator.pop(),
+            tooltip: 'Salir',
           ),
         ],
       ),
@@ -376,11 +466,11 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   Widget _dibujarGrillaFondoUI(int total, int inicio, double ancho) {
     return Column(
       children: [
-        SizedBox(height: heightHeader),
+        SizedBox(height: altoCabecera),
         ...List.generate(
           total,
           (i) => Container(
-            height: heightHora,
+            height: altoHora,
             width: ancho,
             decoration: BoxDecoration(
               border: Border(
@@ -390,7 +480,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
             child: Row(
               children: [
                 Container(
-                  width: widthColumnaHora,
+                  width: anchoColumnaHora,
                   alignment: Alignment.topCenter,
                   padding: const EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
@@ -420,16 +510,16 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     return Row(
       children: [
         Container(
-          width: widthColumnaHora,
-          height: heightHeader,
+          width: anchoColumnaHora,
+          height: altoCabecera,
           decoration: BoxDecoration(
             color: rojoOscuro,
           ),
         ),
         ...diasSemana.map(
           (dia) => Container(
-            width: widthColumnaDia,
-            height: heightHeader,
+            width: anchoColumnaDia,
+            height: altoCabecera,
             decoration: BoxDecoration(
               color: rojoOscuro,
               border: Border(
@@ -476,9 +566,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
         final double fin = _parseHora(clase.horaFin);
 
         final double top =
-            heightHeader + ((inicio - horaInicioGrid) * heightHora);
-        final double height = (fin - inicio) * heightHora;
-        final double left = widthColumnaHora + (indexColumna * widthColumnaDia);
+            altoCabecera + ((inicio - horaInicioGrid) * altoHora);
+        final double height = (fin - inicio) * altoHora;
+        final double left = anchoColumnaHora + (indexColumna * anchoColumnaDia);
 
         final Color colorFondo = _obtenerColorCurso(clase.curso);
         final Color colorTexto =
@@ -488,7 +578,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
           Positioned(
             left: left + 1.5,
             top: top + 1,
-            width: widthColumnaDia - 3,
+            width: anchoColumnaDia - 3,
             height: height - 2,
             child: GestureDetector(
               onTap: () => _mostrarDetalleClase(clase, diaData),
@@ -573,11 +663,11 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
   pw.Widget _dibujarGrillaPdf(int total, int inicio, double ancho) {
     return pw.Column(
       children: [
-        pw.SizedBox(height: heightHeader),
+        pw.SizedBox(height: altoCabecera),
         ...List.generate(
           total,
           (i) => pw.Container(
-            height: heightHora,
+            height: altoHora,
             width: ancho,
             decoration: const pw.BoxDecoration(
               border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey200)),
@@ -585,7 +675,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
             child: pw.Row(
               children: [
                 pw.Container(
-                  width: widthColumnaHora,
+                  width: anchoColumnaHora,
                   alignment: pw.Alignment.topCenter,
                   padding: const pw.EdgeInsets.only(top: 4),
                   decoration: const pw.BoxDecoration(
@@ -609,18 +699,18 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     );
   }
 
-  pw.Widget _dibujarCabecerasPdf() {
+  pw.Widget _dibujarCabecerasPdf(double anchoColDiaPdf) {
     return pw.Row(
       children: [
         pw.Container(
-          width: widthColumnaHora,
-          height: heightHeader,
+          width: anchoColumnaHora,
+          height: altoCabecera,
           color: PdfColor.fromInt(rojoOscuro.toARGB32()),
         ),
         ...diasSemana.map(
           (dia) => pw.Container(
-            width: widthColumnaDia,
-            height: heightHeader,
+            width: anchoColDiaPdf,
+            height: altoCabecera,
             color: PdfColor.fromInt(rojoOscuro.toARGB32()),
             alignment: pw.Alignment.center,
             child: pw.Text(
@@ -637,7 +727,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     );
   }
 
-  List<pw.Widget> _generarBloquesPdf(int horaInicioGrid) {
+  List<pw.Widget> _generarBloquesPdf(int horaInicioGrid, double anchoColDiaPdf) {
     List<pw.Widget> bloques = [];
     if (widget.horarioResponse.horarios.isEmpty) return [];
     
@@ -658,9 +748,9 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
         final double inicio = _parseHora(clase.horaInicio);
         final double fin = _parseHora(clase.horaFin);
         final double top =
-            heightHeader + ((inicio - horaInicioGrid) * heightHora);
-        final double height = (fin - inicio) * heightHora;
-        final double left = widthColumnaHora + (indexCol * widthColumnaDia);
+            altoCabecera + ((inicio - horaInicioGrid) * altoHora);
+        final double height = (fin - inicio) * altoHora;
+        final double left = anchoColumnaHora + (indexCol * anchoColDiaPdf);
 
         final Color c = _obtenerColorCurso(clase.curso);
         final PdfColor colorF = PdfColor.fromInt(c.toARGB32());
@@ -672,7 +762,7 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
             left: left + 1.5,
             top: top + 1,
             child: pw.Container(
-              width: widthColumnaDia - 3,
+              width: anchoColDiaPdf - 3,
               height: height - 2,
               padding: const pw.EdgeInsets.all(4),
               decoration: pw.BoxDecoration(
