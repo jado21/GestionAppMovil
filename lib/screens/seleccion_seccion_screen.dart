@@ -4,17 +4,17 @@ import '../service/api_service.dart';
 import 'schedule_screen.dart';
 
 class SeleccionSeccionScreen extends StatefulWidget {
-  final bool esCachimbo;
   final String ciclo;
   final String cicloRomano;
   final String escuela;
+  final String escuelaId;
 
   const SeleccionSeccionScreen({
     super.key,
-    required this.esCachimbo,
     required this.ciclo,
     required this.cicloRomano,
     required this.escuela,
+    required this.escuelaId,
   });
 
   @override
@@ -25,7 +25,6 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
     with TickerProviderStateMixin {
 
   // Secciones por ciclo para FISI (UNMSM)
-  // Ajusta estas cantidades según la data real de tu facultad
   static const Map<int, int> seccionesPorCiclo = {
     1: 6,   // Ciclo I   → 6 secciones
     2: 6,   // Ciclo II  → 6 secciones
@@ -101,10 +100,13 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
     });
 
     try {
+      // Ciclo I: cursos iguales para las 3 escuelas, se usa Ing. Sistemas (57)
+      final escuelaIdParaApi = widget.ciclo == '1' ? '57' : widget.escuelaId;
+
       final data = await ApiService.enviarCicloGrupo(
         widget.ciclo,
         seccionLabel,
-        "57",
+        escuelaIdParaApi,
       );
 
       if (!mounted) return;
@@ -194,52 +196,52 @@ class _SeleccionSeccionScreenState extends State<SeleccionSeccionScreen>
                     opacity: _headerFade,
                     child: Column(
                       children: [
-                        // Badge del ciclo seleccionado (solo para Regular)
-                        if (!widget.esCachimbo)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFC92834).withValues(alpha: 0.3),
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                color: const Color(0xFFC92834).withValues(alpha: 0.6),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: Text(
-                              'Ciclo ${widget.cicloRomano}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1.5,
-                              ),
+                        // Badge del ciclo seleccionado
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFC92834).withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: const Color(0xFFC92834).withValues(alpha: 0.6),
+                              width: 1.5,
                             ),
                           ),
-                        if (!widget.esCachimbo) const SizedBox(height: 20),
-                        Icon(
-                          widget.esCachimbo
-                              ? Icons.auto_stories
-                              : Icons.groups_rounded,
+                          child: Text(
+                            'Ciclo ${widget.cicloRomano}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Icon(
+                          Icons.groups_rounded,
                           color: Colors.white,
                           size: 50,
                         ),
                         const SizedBox(height: 12),
-                        if (widget.esCachimbo) ...[
-                          const Text(
-                            '¡Bienvenido, Cachimbo!',
-                            style: TextStyle(
+                        // Mostrar la escuela
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            widget.escuela,
+                            style: const TextStyle(
                               color: Colors.white70,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0.5,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 8),
-                        ],
+                        ),
+                        const SizedBox(height: 8),
                         const Text(
                           'Selecciona tu Sección',
                           style: TextStyle(
@@ -519,4 +521,3 @@ class _SeccionBlurButtonState extends State<_SeccionBlurButton>
     );
   }
 }
-

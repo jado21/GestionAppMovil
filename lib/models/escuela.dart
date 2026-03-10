@@ -1,4 +1,3 @@
-
 class Escuela{
   final int id;
   final String nombre;
