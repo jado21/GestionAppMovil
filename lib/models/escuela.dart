@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class Escuela{
   final int id;
