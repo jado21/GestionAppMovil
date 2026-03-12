@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_test/screens/seleccion_perfil_screen.dart'; 
+import 'package:mobile_app_test/screens/seleccion_horario_screen.dart'; 
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -15,17 +15,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _iniciarTemporizador();
   }
 
-  _iniciarTemporizador() async {
+  Future<void> _iniciarTemporizador() async {
     // Esperamos 3 segundos mostrando el fondo y el logo
     await Future.delayed(const Duration(seconds: 3));
 
     if (!mounted) return; 
 
-    // Navegación a la selección de perfil (Cachimbo/Regular)
+    // Navegación a la pantalla de selección de horario
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const SeleccionPerfilScreen(),
+        builder: (context) => const SeleccionHorarioScreen(),
       ),
     );
   }
@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           // --- CAPA 2: FILTRO OSCURO ---
           Container(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
           ),
 
           // --- CAPA 3: CONTENIDO (LOGO Y TEXTO) ---
