@@ -42,26 +42,49 @@ class _ResultadoScreenState extends State<ResultadoScreen> {
     'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
   ];
 
-  // PALETA DE COLORES (Convertida al formato Flutter)
-  final Map<String, Color> mapaColoresCursos = {
-  'REDACCIÓN': const Color(0xFF3B82F6), // Azul
-  'CÁLCULO': const Color(0xFF10B981),   // Verde Esmeralda
-  'ÁLGEBRA': const Color(0xFFF97316),   // Naranja
-  'METODOS': const Color(0xFFA855F7),   // Púrpura
-  'BIOLOGÍA': const Color(0xFFF43F5E),  // Rosa fuerte
-  'PROGRAMACIÓN': const Color(0xFF14B8A6), // Teal
-  'MEDIO AMBIENTE': const Color(0xFFF59E0B), // Ámbar
-  'DESARROLLO': const Color(0xFF0EA5E9),    // Azul cielo
-  'FÍSICA': const Color(0xFFEF4444),        // Rojo
-  'QUÍMICA': const Color(0xFF6366F1),       // Índigo
-  };
+  late Map<String, Color> _cursoColores;
+
+  final List<Color> _paletaColores = const [
+    Color(0xFF3B82F6),
+    Color(0xFF10B981),
+    Color(0xFFF97316),
+    Color(0xFFA855F7),
+    Color(0xFFF43F5E),
+    Color(0xFF14B8A6),
+    Color(0xFFF59E0B),
+    Color(0xFF0EA5E9),
+    Color(0xFFEF4444),
+    Color(0xFF6366F1),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _cursoColores = {};
+    Map<String, String> cursosAgrupados = {};
+
+    for (var clasesDelDia in widget.horarioResponse.horarios.values) {
+      for (var clase in clasesDelDia) {
+        final nombreCurso = clase.curso.trim();
+        if (nombreCurso.isEmpty) continue;
+        
+        final key = nombreCurso.toLowerCase();
+        if (!cursosAgrupados.containsKey(key)) {
+          cursosAgrupados[key] = nombreCurso;
+        }
+      }
+    }
+    
+    List<String> listaCursos = cursosAgrupados.values.toList()..sort();
+    
+    for (int i = 0; i < listaCursos.length; i++) {
+      _cursoColores[listaCursos[i]] = _paletaColores[i % _paletaColores.length];
+      _cursoColores[listaCursos[i].toLowerCase()] = _paletaColores[i % _paletaColores.length];
+    }
+  }
 
   Color _obtenerColorCurso(String nombre) {
-    String n = nombre.toUpperCase();
-    for (var e in mapaColoresCursos.entries) {
-      if (n.contains(e.key)) return e.value;
-    }
-    return const Color(0xFF607D8B);
+    return _cursoColores[nombre.trim()] ?? _cursoColores[nombre.trim().toLowerCase()] ?? const Color(0xFF607D8B);
   }
 
   IconData _obtenerIconoTipo(String tipo) {

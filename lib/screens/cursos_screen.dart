@@ -18,27 +18,18 @@ class CursosScreen extends StatelessWidget {
     required this.grupo,
   });
   
-  static const Map<String, Color> mapaColoresCursos = {
-    'REDACCIÓN': Color(0xFF3B82F6),
-    'CÁLCULO': Color(0xFF10B981),
-    'CALCULO': Color(0xFF10B981), // Versión sin tilde por si acaso
-    'ÁLGEBRA': Color(0xFFF97316),
-    'METODOS': Color(0xFFA855F7),
-    'BIOLOGÍA': Color(0xFFF43F5E),
-    'PROGRAMACIÓN': Color(0xFF14B8A6),
-    'MEDIO AMBIENTE': Color(0xFFF59E0B),
-    'DESARROLLO': Color(0xFF0EA5E9),
-    'FÍSICA': Color(0xFFEF4444),
-    'QUÍMICA': Color(0xFF6366F1),
-  };
-
-  Color _obtenerColorCurso(String nombre) {
-    String n = nombre.toUpperCase();
-    for (var e in mapaColoresCursos.entries) {
-      if (n.contains(e.key)) return e.value;
-    }
-    return Colors.blueGrey; 
-  }
+  static const List<Color> _paletaColores = [
+    Color(0xFF3B82F6),
+    Color(0xFF10B981),
+    Color(0xFFF97316),
+    Color(0xFFA855F7),
+    Color(0xFFF43F5E),
+    Color(0xFF14B8A6),
+    Color(0xFFF59E0B),
+    Color(0xFF0EA5E9),
+    Color(0xFFEF4444),
+    Color(0xFF6366F1),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -187,10 +178,13 @@ class CursosScreen extends StatelessWidget {
     final listaCursos = cursos.values.toList()
       ..sort((a, b) => a.nombre.compareTo(b.nombre));
 
+    Map<String, Color> mapaColores = {};
+    for (int i = 0; i < listaCursos.length; i++) {
+      mapaColores[listaCursos[i].nombre] = _paletaColores[i % _paletaColores.length];
+    }
+
     return listaCursos.map((curso) {
-      // Obtenemos el color dinámico para este curso específico
-      final Color colorFondo = _obtenerColorCurso(curso.nombre);
-      // Calculamos si el texto debe ser blanco o negro según el fondo
+      final Color colorFondo = mapaColores[curso.nombre] ?? Colors.blueGrey;
       final Color colorTexto = colorFondo.computeLuminance() > 0.6 ? Colors.black87 : Colors.white;
 
       return DataRow(cells: [
