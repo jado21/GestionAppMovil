@@ -1,54 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/horario_response.dart';
 
 class CursosScreen extends StatelessWidget {
   final HorarioResponse horarioResponse;
+  final String periodo;
+  final String escuela;
+  final String ciclo;
+  final String grupo;
 
-  const CursosScreen({super.key, required this.horarioResponse});
+  const CursosScreen({
+    super.key, 
+    required this.horarioResponse,
+    required this.periodo,
+    required this.escuela,
+    required this.ciclo,
+    required this.grupo,
+  });
   
-  static const Map<String, Color> mapaColoresCursos = {
-    'REDACCIÓN': Color(0xFF3B82F6),
-    'CÁLCULO': Color(0xFF10B981),
-    'CALCULO': Color(0xFF10B981), // Versión sin tilde por si acaso
-    'ÁLGEBRA': Color(0xFFF97316),
-    'METODOS': Color(0xFFA855F7),
-    'BIOLOGÍA': Color(0xFFF43F5E),
-    'PROGRAMACIÓN': Color(0xFF14B8A6),
-    'MEDIO AMBIENTE': Color(0xFFF59E0B),
-    'DESARROLLO': Color(0xFF0EA5E9),
-    'FÍSICA': Color(0xFFEF4444),
-    'QUÍMICA': Color(0xFF6366F1),
-  };
-
-  Color _obtenerColorCurso(String nombre) {
-    String n = nombre.toUpperCase();
-    for (var e in mapaColoresCursos.entries) {
-      if (n.contains(e.key)) return e.value;
-    }
-    return Colors.blueGrey; 
-  }
+  static const List<Color> _paletaColores = [
+    Color(0xFF3B82F6),
+    Color(0xFF10B981),
+    Color(0xFFF97316),
+    Color(0xFFA855F7),
+    Color(0xFFF43F5E),
+    Color(0xFF14B8A6),
+    Color(0xFFF59E0B),
+    Color(0xFF0EA5E9),
+    Color(0xFFEF4444),
+    Color(0xFF6366F1),
+  ];
 
   @override
   Widget build(BuildContext context) {
     const Color rojoOscuro = Color(0xFFA80010);
-    const Color headerBackground = Color(0xFFF5F5F5);
+    const Color fondoCabecera = Color(0xFFF5F5F5);
 
     final cursosAgrupados = _agruparCursos(horarioResponse);
-    final rows = _buildRows(cursosAgrupados, '');
+    final filas = _construirFilas(cursosAgrupados, '');
+
+    final String tituloPrincipal = 'Cursos $periodo • Ciclo $ciclo';
+        
+    final String subtitulo = (ciclo == '1' || ciclo == 'I')
+        ? 'Grupo $grupo'
+        : 'Grupo $grupo • $escuela';
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Cursos - Ciclo ',
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              tituloPrincipal,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (subtitulo.isNotEmpty)
+              Text(
+                subtitulo,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+          ],
         ),
         backgroundColor: rojoOscuro,
         iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app_rounded, size: 22),
+            onPressed: () => SystemNavigator.pop(),
+            tooltip: 'Salir',
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: rows.isEmpty
+        child: filas.isEmpty
             ? const Center(
                 child: Text(
                   'No hay cursos para mostrar.',
@@ -57,14 +94,14 @@ class CursosScreen extends StatelessWidget {
               )
             : DecoratedBox(
                 decoration: BoxDecoration(
-                  color: headerBackground,
+                  color: fondoCabecera,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: SingleChildScrollView(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                      headingRowColor: WidgetStateProperty.all(headerBackground),
+                      headingRowColor: WidgetStateProperty.all(fondoCabecera),
                       columnSpacing: 12,
                       horizontalMargin: 12,
                       dataRowMinHeight: 34,
@@ -85,7 +122,7 @@ class CursosScreen extends StatelessWidget {
                       const DataColumn(label: Text('Aula')),
                       //const DataColumn(label: Text('Grupo')),
                     ],
-                      rows: rows,
+                      rows: filas,
                     ),
                   ),
                 ),
@@ -137,14 +174,17 @@ class CursosScreen extends StatelessWidget {
   return cursos;
 }
 
-  List<DataRow> _buildRows(Map<String, _CursoAgrupado> cursos, String grupo) {
+  List<DataRow> _construirFilas(Map<String, _CursoAgrupado> cursos, String grupo) {
     final listaCursos = cursos.values.toList()
       ..sort((a, b) => a.nombre.compareTo(b.nombre));
 
+    Map<String, Color> mapaColores = {};
+    for (int i = 0; i < listaCursos.length; i++) {
+      mapaColores[listaCursos[i].nombre] = _paletaColores[i % _paletaColores.length];
+    }
+
     return listaCursos.map((curso) {
-      // Obtenemos el color dinámico para este curso específico
-      final Color colorFondo = _obtenerColorCurso(curso.nombre);
-      // Calculamos si el texto debe ser blanco o negro según el fondo
+      final Color colorFondo = mapaColores[curso.nombre] ?? Colors.blueGrey;
       final Color colorTexto = colorFondo.computeLuminance() > 0.6 ? Colors.black87 : Colors.white;
 
       return DataRow(cells: [
@@ -171,24 +211,24 @@ class CursosScreen extends StatelessWidget {
           ),
         ),
         DataCell(_buildDocenteCell(curso.sesiones)),
-        DataCell(_buildMiniRows(curso.sesiones, (s) => s.tipo, width: 110)),
-        DataCell(_buildMiniRows(curso.sesiones, (s) => s.dia, width: 110)),
-        DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaInicio, width: 95)),
-        DataCell(_buildMiniRows(curso.sesiones, (s) => s.horaFin, width: 95)),
-        DataCell(_buildMiniRows(curso.sesiones, (s) => s.aula, width: 115)),
+        DataCell(_buildMiniFilas(curso.sesiones, (s) => s.tipo, width: 110)),
+        DataCell(_buildMiniFilas(curso.sesiones, (s) => s.dia, width: 110)),
+        DataCell(_buildMiniFilas(curso.sesiones, (s) => s.horaInicio, width: 95)),
+        DataCell(_buildMiniFilas(curso.sesiones, (s) => s.horaFin, width: 95)),
+        DataCell(_buildMiniFilas(curso.sesiones, (s) => s.aula, width: 115)),
         //DataCell(Text(grupo)),
       ]);
     }).toList();
   }
 
-  // ... (Resto de métodos auxiliares: _buildDocenteCell, _buildMiniRows, _ordenDia, etc.)
+  // ... (Resto de métodos auxiliares: _buildDocenteCell, _buildMiniFilas, _ordenDia, etc.)
 
   Widget _buildDocenteCell(List<_SesionCurso> sesiones) {
     if (sesiones.isEmpty) return const Text('-');
     return Text(_docentePrincipal(sesiones));
   }
 
-  Widget _buildMiniRows(
+  Widget _buildMiniFilas(
     List<_SesionCurso> sesiones,
     String Function(_SesionCurso sesion) getText,
     {double width = 170}
@@ -249,12 +289,15 @@ class CursosScreen extends StatelessWidget {
   }
 
   String _formatTipo(String tipo) {
-    switch (tipo.toLowerCase()) {
+    switch (tipo.toLowerCase().trim()) {
+      case '1':
       case 'teoria':
       case 'teoría':
         return 'Teoría';
+      case '3':
       case 'laboratorio':
         return 'Laboratorio';
+      case '2':
       case 'practica':
       case 'práctica':
         return 'Práctica';

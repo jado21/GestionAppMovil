@@ -2,12 +2,15 @@ class FormatHelpers {
   FormatHelpers._();
 
   static String formatTipoClase(String tipo) {
-    switch (tipo.toLowerCase()) {
+    switch (tipo.toLowerCase().trim()) {
+      case '1':
       case 'teoria':
       case 'teoría':
         return 'Teoría';
+      case '3':
       case 'laboratorio':
         return 'Laboratorio';
+      case '2':
       case 'practica':
       case 'práctica':
         return 'Práctica';
@@ -32,9 +35,9 @@ class FormatHelpers {
     }
     return docente
         .split(' ')
-        .map((word) => word.isEmpty
+        .map((palabra) => palabra.isEmpty
             ? ''
-            : word[0].toUpperCase() + word.substring(1).toLowerCase())
+            : palabra[0].toUpperCase() + palabra.substring(1).toLowerCase())
         .join(' ');
   }
 }
