@@ -164,11 +164,7 @@ class _SeleccionHorarioScreenState extends State<SeleccionHorarioScreen>
       final ciclo = (_selectedCicloIndex! + 1).toString();
       final grupo = _selectedGrupo!.toString();
 
-      final escuelaSistema = _escuelas.firstWhere(
-        (e) => e.nombre == "Ingeniería de Sistemas",
-      );
-
-      final escuelaIdParaApi = ciclo == '1' ? escuelaSistema.id.toString() : _selectedEscuela!.id.toString();
+      final escuelaIdParaApi = _selectedEscuela!.id.toString();
 
       final data = await ApiService.enviarCicloGrupo(
         ciclo,
