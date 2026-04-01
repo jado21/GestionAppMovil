@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../service/api_service.dart';
-import 'scheduleScreen.dart'; 
+import '../models/horario_response.dart';
+import 'scheduleScreen.dart';
+import 'cursosScreen.dart';
 
 class FormularioScreen extends StatefulWidget {
   final bool esCachimbo; 
@@ -112,29 +114,62 @@ class _FormularioScreenState extends State<FormularioScreen> {
 
                   cargando
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : SizedBox(
-                          width: 220,
-                          height: 60,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: blancoTransparente,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              side: const BorderSide(color: Colors.white54, width: 1.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                      : Column(
+                          children: [
+                            SizedBox(
+                              width: 220,
+                              height: 60,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: blancoTransparente,
+                                  foregroundColor: Colors.white,
+                                  elevation: 0,
+                                  side: const BorderSide(color: Colors.white54, width: 1.5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                            onPressed: () => _enviarDatos(
+                              (data) => ResultadoScreen(horarioResponse: data),
+                            ),
+                                child: const Text(
+                                  'VER HORARIO',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
                               ),
                             ),
-                            onPressed: _enviarDatos,
-                            child: const Text(
-                              'VER HORARIO',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.2,
+                            const SizedBox(height: 15),
+                            SizedBox(
+                              width: 220,
+                              height: 60,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: blancoTransparente,
+                                  foregroundColor: Colors.white,
+                                  elevation: 0,
+                                  side: const BorderSide(color: Colors.white54, width: 1.5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                onPressed: () => _enviarDatos(
+                                  (data) => CursosScreen(horarioResponse: data),
+                                ),
+                                child: const Text(
+                                  'VER CURSOS',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                 ],
               ),
@@ -145,7 +180,9 @@ class _FormularioScreenState extends State<FormularioScreen> {
     );
   }
 
-  Future<void> _enviarDatos() async {
+  Future<void> _enviarDatos(
+    Widget Function(HorarioResponse data) screenBuilder,
+  ) async {
     // Validación según perfil
     if (grupoController.text.isEmpty || (!widget.esCachimbo && cicloController.text.isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -167,7 +204,7 @@ class _FormularioScreenState extends State<FormularioScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultadoScreen(horarioResponse: data),
+          builder: (context) => screenBuilder(data),
         ),
       );
     } catch (e) {
